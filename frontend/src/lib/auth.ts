@@ -16,8 +16,9 @@ export interface JWTPayload {
   exp: number;
 }
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET || "wristnerd-admin-default-secret-change-me";
-const TOKEN_COOKIE_NAME = "wristnerd-auth-token";
+const JWT_SECRET_KEY =
+  process.env.NEXT_PUBLIC_JWT_SECRET || "wristnerd-admin-default-secret-change-me";
+const AUTH_STORAGE_KEY = "wristnerd-auth-token";
 const TOKEN_EXPIRY = "24h";
 
 function getSecretKey(): Uint8Array {
@@ -47,8 +48,26 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
-export function getTokenCookieName(): string {
-  return TOKEN_COOKIE_NAME;
+/** Save token to localStorage (client-side, static-export compatible) */
+export function saveToken(token: string): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(AUTH_STORAGE_KEY, token);
+  }
+}
+
+/** Read token from localStorage */
+export function getStoredToken(): string | null {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(AUTH_STORAGE_KEY);
+  }
+  return null;
+}
+
+/** Remove token from localStorage */
+export function removeToken(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+  }
 }
 
 interface StoredUser {
@@ -61,37 +80,46 @@ interface StoredUser {
 function getUsers(): StoredUser[] {
   const users: StoredUser[] = [];
 
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
   if (adminEmail && adminPassword) {
     users.push({
       email: adminEmail,
-      name: process.env.ADMIN_NAME || "Admin",
+      name: process.env.NEXT_PUBLIC_ADMIN_NAME || "Admin",
       password: adminPassword,
       role: "admin",
     });
   }
 
-  const editorEmail = process.env.EDITOR_EMAIL;
-  const editorPassword = process.env.EDITOR_PASSWORD;
+  const editorEmail = process.env.NEXT_PUBLIC_EDITOR_EMAIL;
+  const editorPassword = process.env.NEXT_PUBLIC_EDITOR_PASSWORD;
   if (editorEmail && editorPassword) {
     users.push({
       email: editorEmail,
-      name: process.env.EDITOR_NAME || "Editor",
+      name: process.env.NEXT_PUBLIC_EDITOR_NAME || "Editor",
       password: editorPassword,
       role: "editor",
     });
   }
 
-  const viewerEmail = process.env.VIEWER_EMAIL;
-  const viewerPassword = process.env.VIEWER_PASSWORD;
+  const viewerEmail = process.env.NEXT_PUBLIC_VIEWER_EMAIL;
+  const viewerPassword = process.env.NEXT_PUBLIC_VIEWER_PASSWORD;
   if (viewerEmail && viewerPassword) {
     users.push({
       email: viewerEmail,
-      name: process.env.VIEWER_NAME || "Viewer",
+      name: process.env.NEXT_PUBLIC_VIEWER_NAME || "Viewer",
       password: viewerPassword,
       role: "viewer",
     });
+  }
+
+  // Fallback demo accounts when no env vars are set
+  if (users.length === 0) {
+    users.push(
+      { email: "admin@wristnerd.xyz", name: "Admin", password: "admin123", role: "admin" },
+      { email: "editor@wristnerd.xyz", name: "Editor", password: "editor123", role: "editor" },
+      { email: "viewer@wristnerd.xyz", name: "Viewer", password: "viewer123", role: "viewer" },
+    );
   }
 
   return users;
@@ -101,7 +129,7 @@ export function validateCredentials(
   email: string,
   password: string
 ): AuthUser | null {
-  const masterPassword = process.env.ADMIN_MASTER_PASSWORD;
+  const masterPassword = process.env.NEXT_PUBLIC_ADMIN_MASTER_PASSWORD;
   if (masterPassword && password === masterPassword) {
     return {
       email,

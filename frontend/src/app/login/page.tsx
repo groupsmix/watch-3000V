@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, Watch } from "lucide-react";
+import { validateCredentials, signToken, saveToken } from "@/lib/auth";
 
 export default function LoginPage() {
   return (
@@ -52,24 +53,20 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Login failed");
+      const user = validateCredentials(email, password);
+      if (!user) {
+        setError("Invalid email or password");
         setLoading(false);
         return;
       }
 
+      const token = await signToken(user);
+      saveToken(token);
+
       router.push(redirectTo);
       router.refresh();
     } catch {
-      setError("Network error. Please try again.");
+      setError("Login failed. Please try again.");
       setLoading(false);
     }
   }
