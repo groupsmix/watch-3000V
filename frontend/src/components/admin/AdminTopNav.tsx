@@ -8,9 +8,18 @@ import {
   LogOut,
   Settings,
   User,
+  Shield,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+
+const ROLE_LABELS: Record<string, string> = {
+  admin: "Admin",
+  editor: "Editor",
+  viewer: "Viewer",
+};
 
 export default function AdminTopNav() {
+  const { user, logout } = useAuth();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -92,9 +101,15 @@ export default function AdminTopNav() {
               className="flex items-center gap-2 p-1.5 pr-3 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-navy to-navy-light flex items-center justify-center">
-                <span className="text-white text-xs font-bold">A</span>
+                <span className="text-white text-xs font-bold">{user?.name?.charAt(0).toUpperCase() || "U"}</span>
               </div>
-              <span className="hidden sm:block text-sm font-medium text-gray-700">Admin</span>
+              <div className="hidden sm:flex flex-col items-start">
+                <span className="text-sm font-medium text-gray-700 leading-tight">{user?.name || "User"}</span>
+                <span className="text-xs text-gray-400 leading-tight flex items-center gap-1">
+                  <Shield className="w-3 h-3" />
+                  {ROLE_LABELS[user?.role || ""] || "User"}
+                </span>
+              </div>
               <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
             </button>
 
@@ -111,7 +126,13 @@ export default function AdminTopNav() {
                     Settings
                   </button>
                   <div className="border-t border-gray-100 my-1" />
-                  <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50">
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      logout();
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50"
+                  >
                     <LogOut className="w-4 h-4" />
                     Sign Out
                   </button>
