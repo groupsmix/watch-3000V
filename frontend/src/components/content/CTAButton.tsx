@@ -12,13 +12,13 @@ export default function CTAButton({
   className = "",
 }: CTAButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center gap-2 font-semibold text-center transition-all duration-300 min-h-[48px]";
+    "inline-flex items-center justify-center gap-2.5 font-semibold text-center transition-all duration-500 min-h-[48px]";
 
   const variantClasses = {
     primary:
-      "px-8 py-3.5 cta-shine text-white rounded-full text-base tracking-wide hover:shadow-lg",
+      "px-8 py-3.5 cta-shine text-white rounded-full text-base tracking-wide hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)]",
     secondary:
-      "px-6 py-3 bg-white text-gold border-2 border-gold hover:bg-gold hover:text-white rounded-full text-sm tracking-wide hover:shadow-md",
+      "px-6 py-3 bg-white text-gold border border-gold/30 hover:bg-gold hover:text-white rounded-full text-sm tracking-wide hover:shadow-[0_4px_20px_rgba(201,169,110,0.15)]",
   };
 
   return (

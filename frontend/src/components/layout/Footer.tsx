@@ -2,148 +2,136 @@
 
 import Link from "next/link";
 
+const giftGuideLinks = [
+  { href: "/occasion/fathers-day", label: "Father’s Day Watches" },
+  { href: "/occasion/christmas", label: "Christmas Gift Watches" },
+  { href: "/occasion/birthday", label: "Birthday Watches" },
+  { href: "/budget/under-200", label: "Best Watches Under $200" },
+  { href: "/budget/under-500", label: "Best Watches Under $500" },
+];
+
+const resourceLinks = [
+  { href: "/reviews", label: "Watch Reviews" },
+  { href: "/gift-finder", label: "Gift Finder Quiz" },
+  { href: "/deals", label: "Current Deals" },
+  { href: "/blog", label: "The Journal" },
+];
+
+const companyLinks = [
+  { href: "/about", label: "About WristNerd" },
+  { href: "/affiliate-disclosure", label: "Affiliate Disclosure" },
+  { href: "/contact", label: "Contact Us" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms-of-use", label: "Terms of Use" },
+];
+
 export default function Footer() {
   return (
-    <footer className="relative bg-black-rich border-t border-gold/10">
-      {/* Ambient glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+    <footer className="relative bg-navy text-white overflow-hidden">
+      {/* Decorative glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="absolute -top-40 left-1/4 w-80 h-80 bg-gold/[0.03] rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 right-1/4 w-80 h-80 bg-gold/[0.02] rounded-full blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-          {/* Brand */}
-          <div className="lg:pr-8">
-            <Link href="/" className="inline-flex items-center">
-              <span className="text-2xl font-bold font-heading text-ivory tracking-tight">
-                Wrist
-              </span>
-              <span className="text-2xl font-bold font-heading gradient-text tracking-tight">
-                Nerd
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-gold ml-1 opacity-80" />
-            </Link>
-            <p className="mt-5 text-sm text-ivory-dim/70 leading-relaxed">
-              Expert watch gift guides, honest reviews, and a proprietary
-              Gift-Worthiness Score to help you find the perfect watch for him.
-            </p>
-            <div className="mt-6 h-px w-12 bg-gradient-to-r from-gold/40 to-transparent" />
-          </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Content */}
+        <div className="py-16 lg:py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+            {/* Brand Column */}
+            <div className="lg:col-span-4 lg:pr-12">
+              <Link href="/" className="inline-flex items-center gap-1 group">
+                <span className="text-[1.75rem] font-bold font-heading tracking-[-0.02em] text-white transition-all duration-300">
+                  Wrist
+                </span>
+                <span className="text-[1.75rem] font-bold font-heading tracking-[-0.02em] gradient-text transition-all duration-300">
+                  Nerd
+                </span>
+              </Link>
+              <p className="mt-5 text-[0.9375rem] text-gray-400 leading-[1.7] max-w-sm">
+                Expert watch gift guides, honest reviews, and a proprietary
+                Gift-Worthiness Score to help you find the perfect watch for him.
+              </p>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="h-px w-8 bg-gold/40" />
+                <span className="text-[0.6875rem] font-semibold text-gold/60 uppercase tracking-[0.15em]">
+                  Est. 2024
+                </span>
+              </div>
+            </div>
 
-          {/* Gift Guides */}
-          <div>
-            <h3 className="label-luxury mb-6">
-              Gift Guides
-            </h3>
-            <ul className="space-y-3.5">
-              <li>
-                <Link href="/occasion/fathers-day" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Father&apos;s Day Watches
-                </Link>
-              </li>
-              <li>
-                <Link href="/occasion/christmas" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Christmas Gift Watches
-                </Link>
-              </li>
-              <li>
-                <Link href="/occasion/birthday" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Birthday Watches
-                </Link>
-              </li>
-              <li>
-                <Link href="/budget/under-200" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Best Watches Under $200
-                </Link>
-              </li>
-              <li>
-                <Link href="/budget/under-500" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Best Watches Under $500
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Gift Guides */}
+            <div className="lg:col-span-3">
+              <h3 className="luxury-label text-gold mb-6">Gift Guides</h3>
+              <ul className="space-y-3.5">
+                {giftGuideLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Resources */}
-          <div>
-            <h3 className="label-luxury mb-6">
-              Resources
-            </h3>
-            <ul className="space-y-3.5">
-              <li>
-                <Link href="/reviews" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Watch Reviews
-                </Link>
-              </li>
-              <li>
-                <Link href="/gift-finder" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Gift Finder Quiz
-                </Link>
-              </li>
-              <li>
-                <Link href="/deals" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Current Deals
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog/watch-care-guide" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Watch Care Guide
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Resources */}
+            <div className="lg:col-span-2">
+              <h3 className="luxury-label text-gold mb-6">Resources</h3>
+              <ul className="space-y-3.5">
+                {resourceLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Company */}
-          <div>
-            <h3 className="label-luxury mb-6">
-              Company
-            </h3>
-            <ul className="space-y-3.5">
-              <li>
-                <Link href="/about" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  About WristNerd
-                </Link>
-              </li>
-              <li>
-                <Link href="/affiliate-disclosure" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Affiliate Disclosure
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-policy" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms-of-use" className="text-sm text-ivory-dim/60 hover:text-gold transition-colors duration-300">
-                  Terms of Use
-                </Link>
-              </li>
-            </ul>
+            {/* Company */}
+            <div className="lg:col-span-3">
+              <h3 className="luxury-label text-gold mb-6">Company</h3>
+              <ul className="space-y-3.5">
+                {companyLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Email Signup */}
-        <div className="mt-16 pt-12 border-t border-gold/8">
-          <div className="max-w-xl">
-            <h3 className="text-lg font-heading font-semibold mb-3 text-ivory">
-              Get Gift Alerts & Deals
-            </h3>
-            <p className="text-sm text-ivory-dim/50 mb-6">
-              Price drops, seasonal picks, and gift guides &mdash; delivered when it matters.
-            </p>
+        {/* Newsletter Section */}
+        <div className="border-t border-white/[0.06] py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <h3 className="text-xl font-heading font-semibold text-white mb-2">
+                Get Gift Alerts &amp; Deals
+              </h3>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                Price drops, seasonal picks, and gift guides &mdash; delivered when it matters.
+              </p>
+            </div>
             <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Your email address"
-                className="flex-1 px-5 py-3.5 rounded-full bg-surface border border-gold/10 text-ivory placeholder-ivory-dim/40 text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/30 transition-all"
+                className="flex-1 px-5 py-3.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/20 transition-all duration-300"
               />
               <button
                 type="submit"
-                className="px-8 py-3.5 cta-shine font-semibold rounded-full text-sm whitespace-nowrap"
+                className="px-7 py-3.5 cta-shine text-white font-semibold rounded-xl text-sm whitespace-nowrap tracking-wide"
               >
                 Subscribe
               </button>
@@ -151,20 +139,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-12 pt-8 border-t border-gold/8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-ivory-dim/30">
+        {/* Bottom Bar */}
+        <div className="border-t border-white/[0.06] py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[0.75rem] text-gray-600 text-center md:text-left leading-relaxed">
             &copy; {new Date().getFullYear()} WristNerd. All rights reserved.
             As an Amazon Associate, WristNerd earns from qualifying purchases.
           </p>
-          <div className="flex gap-6">
-            <Link href="/affiliate-disclosure" className="text-xs text-ivory-dim/30 hover:text-gold transition-colors duration-300">
-              Affiliate Disclosure
+          <div className="flex items-center gap-6">
+            <Link href="/affiliate-disclosure" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
+              Disclosure
             </Link>
-            <Link href="/privacy-policy" className="text-xs text-ivory-dim/30 hover:text-gold transition-colors duration-300">
+            <span className="w-px h-3 bg-gray-700" />
+            <Link href="/privacy-policy" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
               Privacy
             </Link>
-            <Link href="/terms-of-use" className="text-xs text-ivory-dim/30 hover:text-gold transition-colors duration-300">
+            <span className="w-px h-3 bg-gray-700" />
+            <Link href="/terms-of-use" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
               Terms
             </Link>
           </div>

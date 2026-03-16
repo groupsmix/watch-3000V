@@ -5,9 +5,9 @@ interface ProsConsBoxProps {
 
 export default function ProsConsBox({ pros, cons }: ProsConsBoxProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-10">
       {/* Pros */}
-      <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200/60 rounded-2xl p-6 shadow-sm">
+      <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200/40 rounded-2xl p-7">
         <h4 className="text-emerald-700 font-bold text-xs uppercase tracking-[0.1em] mb-4 flex items-center gap-2.5">
           <span className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center">
             <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +27,7 @@ export default function ProsConsBox({ pros, cons }: ProsConsBoxProps) {
       </div>
 
       {/* Cons */}
-      <div className="bg-gradient-to-br from-rose-50 to-white border border-rose-200/60 rounded-2xl p-6 shadow-sm">
+      <div className="bg-gradient-to-br from-rose-50 to-white border border-rose-200/40 rounded-2xl p-7">
         <h4 className="text-rose-700 font-bold text-xs uppercase tracking-[0.1em] mb-4 flex items-center gap-2.5">
           <span className="w-7 h-7 rounded-full bg-rose-100 flex items-center justify-center">
             <svg className="w-4 h-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

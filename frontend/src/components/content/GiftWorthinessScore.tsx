@@ -12,15 +12,15 @@ export default function GiftWorthinessScore({
   const percentage = (score / 10) * 100;
 
   const getBarColor = (s: number) => {
-    if (s >= 9) return "from-emerald-400 to-emerald-500";
-    if (s >= 8) return "from-blue-400 to-blue-500";
+    if (s >= 9) return "from-gold to-gold-hover";
+    if (s >= 8) return "from-gold/80 to-gold";
     if (s >= 7) return "from-amber-400 to-amber-500";
     return "from-gray-400 to-gray-500";
   };
 
   const getTextColor = (s: number) => {
-    if (s >= 9) return "text-emerald-600";
-    if (s >= 8) return "text-blue-600";
+    if (s >= 9) return "text-gold";
+    if (s >= 8) return "text-gold/80";
     if (s >= 7) return "text-amber-600";
     return "text-gray-600";
   };
@@ -36,14 +36,14 @@ export default function GiftWorthinessScore({
   return (
     <div className={`flex items-center ${config.wrapper}`}>
       {showLabel && (
-        <span className={`${config.text} font-medium text-gray-500 uppercase tracking-wider`}
-          style={{ fontSize: size === "sm" ? "0.65rem" : "0.7rem", letterSpacing: "0.08em" }}
+        <span className={`${config.text} font-medium text-gray-400 uppercase tracking-wider`}
+          style={{ fontSize: size === "sm" ? "0.65rem" : "0.7rem", letterSpacing: "0.1em" }}
         >
           Gift-Worthiness
         </span>
       )}
       <div className="flex items-center gap-2 flex-1">
-        <div className={`flex-1 max-w-[120px] bg-gray-100 rounded-full overflow-hidden ${config.bar}`}>
+        <div className={`flex-1 max-w-[120px] bg-pearl rounded-full overflow-hidden ${config.bar}`}>
           <div
             className={`h-full rounded-full bg-gradient-to-r ${getBarColor(score)} transition-all duration-700 ease-out`}
             style={{ width: `${percentage}%` }}

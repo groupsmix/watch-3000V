@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function DealsPage() {
   const page = getDealsPage();
-  if (!page) return <div className="max-w-3xl mx-auto px-4 py-8"><p className="text-ivory-dim">Page not found.</p></div>;
+  if (!page) return <div className="max-w-3xl mx-auto px-4 py-8"><p>Page not found.</p></div>;
 
   const htmlContent = await renderContent(page);
   const schema = getSchemaFromPage(page);
@@ -22,26 +22,25 @@ export default async function DealsPage() {
     <>
       {schema && <SchemaMarkup schema={schema} />}
 
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
-        <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)" }} />
+      {/* Hero Banner */}
+      <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light text-white py-12 md:py-16 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 right-20 w-64 h-64 bg-gold rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={[{ label: "Deals" }]} />
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-ivory leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight">
             Watch Deals
           </h1>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/10 to-transparent" />
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <article className="prose max-w-none">
           <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
         </article>
 
-        <div className="mt-20">
+        <div className="mt-16">
           <EmailSignup
             heading="Never Miss a Deal"
             description="Get price drop alerts and exclusive deals on the watches you're interested in."
