@@ -13,12 +13,13 @@ interface CalendarItem {
   status: ContentStatus;
   scheduledAt: string | null;
   author: string;
+  [key: string]: unknown;
 }
 
-interface CalendarViewProps {
-  items: CalendarItem[];
-  onItemClick: (item: CalendarItem) => void;
-  onSchedule: (item: CalendarItem) => void;
+interface CalendarViewProps<T extends CalendarItem = CalendarItem> {
+  items: T[];
+  onItemClick: (item: T) => void;
+  onSchedule: (item: T) => void;
 }
 
 const STATUS_DOT: Record<ContentStatus, string> = {
@@ -42,7 +43,7 @@ const MONTH_NAMES = [
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function CalendarView({ items, onItemClick, onSchedule }: CalendarViewProps) {
+export default function CalendarView<T extends CalendarItem>({ items, onItemClick, onSchedule }: CalendarViewProps<T>) {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
@@ -88,7 +89,7 @@ export default function CalendarView({ items, onItemClick, onSchedule }: Calenda
   }, [year, month]);
 
   const itemsByDate = useMemo(() => {
-    const map = new Map<string, CalendarItem[]>();
+    const map = new Map<string, T[]>();
     for (const item of items) {
       if (!item.scheduledAt) continue;
       const d = new Date(item.scheduledAt);
