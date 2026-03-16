@@ -207,7 +207,7 @@ export default function AnalyticsPage() {
               <YAxis type="category" dataKey="network" tick={{ fontSize: 11, fill: "#999" }} width={80} />
               <Tooltip
                 contentStyle={{ borderRadius: "12px", border: "1px solid #eee", fontSize: "12px" }}
-                formatter={(value: number) => [`$${value}`, "Revenue"]}
+                formatter={(value) => [`$${value}`, "Revenue"]}
               />
               <Bar dataKey="revenue" fill="#C9A96E" radius={[0, 6, 6, 0]} />
             </BarChart>
