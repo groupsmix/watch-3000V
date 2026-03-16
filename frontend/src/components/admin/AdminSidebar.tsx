@@ -19,6 +19,7 @@ import {
   PenSquare,
   Award,
   GitCompare,
+  CalendarClock,
   Menu,
   X,
   Watch,
@@ -49,6 +50,11 @@ const navItems: NavItem[] = [
       { label: "Brands", href: "/admin/content/brands", icon: <Award className="w-4 h-4" /> },
       { label: "Comparisons", href: "/admin/content/comparisons", icon: <GitCompare className="w-4 h-4" /> },
     ],
+  },
+  {
+    label: "Scheduled Content",
+    href: "/admin/scheduled-content",
+    icon: <CalendarClock className="w-5 h-5" />,
   },
   {
     label: "Affiliates",

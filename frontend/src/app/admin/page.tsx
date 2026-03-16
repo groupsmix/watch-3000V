@@ -16,6 +16,7 @@ import {
   Star,
   PenSquare,
   AlertCircle,
+  CalendarClock,
 } from "lucide-react";
 import StatsCard from "@/components/admin/StatsCard";
 
@@ -67,6 +68,7 @@ const quickActions = [
   { label: "New Blog Post", href: "/admin/content/blog", icon: <PenSquare className="w-4 h-4" />, color: "bg-blue-50 text-blue-600 hover:bg-blue-100" },
   { label: "Manage Links", href: "/admin/affiliates", icon: <Link2 className="w-4 h-4" />, color: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" },
   { label: "View Analytics", href: "/admin/analytics", icon: <BarChart3 className="w-4 h-4" />, color: "bg-purple-50 text-purple-600 hover:bg-purple-100" },
+  { label: "Scheduled Content", href: "/admin/scheduled-content", icon: <CalendarClock className="w-4 h-4" />, color: "bg-sky-50 text-sky-600 hover:bg-sky-100" },
 ];
 
 const contentStatus = [
@@ -82,6 +84,13 @@ const contentStatus = [
 const alerts = [
   { id: 1, text: "3 affiliate links expiring in 7 days", type: "warning" as const },
   { id: 2, text: "Orient Bambino review needs updated pricing", type: "info" as const },
+];
+
+const upcomingScheduled = [
+  { id: 1, title: "Seiko Presage Cocktail Time Deep Dive", type: "Review", date: "Mar 18, 2026", time: "9:00 AM" },
+  { id: 2, title: "Top 5 Watches Under $200 for 2026", type: "Blog", date: "Mar 19, 2026", time: "2:00 PM" },
+  { id: 3, title: "Watch Care & Maintenance Guide", type: "Guide", date: "Mar 20, 2026", time: "10:00 AM" },
+  { id: 4, title: "Longines Heritage Collection Overview", type: "Review", date: "Mar 21, 2026", time: "12:00 PM" },
 ];
 
 export default function AdminDashboard() {
@@ -248,6 +257,38 @@ export default function AdminDashboard() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Upcoming Scheduled Content */}
+      <div className="bg-white rounded-xl border border-gray-200">
+        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <CalendarClock className="w-4 h-4 text-blue-500" />
+            <h2 className="text-sm font-semibold text-gray-900">Upcoming Scheduled Content</h2>
+          </div>
+          <Link href="/admin/scheduled-content" className="text-xs text-gold hover:text-gold-dark font-medium flex items-center gap-1">
+            View all <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="divide-y divide-gray-50">
+          {upcomingScheduled.map((item) => (
+            <div key={item.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                <CalendarClock className="w-4 h-4 text-blue-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-gray-700">
+                  <span className="font-medium">{item.title}</span>
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">{item.type}</p>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium shrink-0">
+                <Clock className="w-3 h-3" />
+                {item.date}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
