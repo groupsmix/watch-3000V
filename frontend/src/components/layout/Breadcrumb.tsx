@@ -11,18 +11,20 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-6">
-      <ol className="flex flex-wrap items-center gap-1.5">
+    <nav aria-label="Breadcrumb" className="text-sm text-gray-400 mb-8">
+      <ol className="flex flex-wrap items-center gap-2">
         <li>
-          <Link href="/" className="hover:text-navy transition-colors">
+          <Link href="/" className="hover:text-gold transition-colors duration-200">
             Home
           </Link>
         </li>
         {items.map((item, i) => (
-          <li key={i} className="flex items-center gap-1.5">
-            <span className="text-gray-300">&gt;</span>
+          <li key={i} className="flex items-center gap-2">
+            <svg className="w-3 h-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
             {item.href ? (
-              <Link href={item.href} className="hover:text-navy transition-colors">
+              <Link href={item.href} className="hover:text-gold transition-colors duration-200">
                 {item.label}
               </Link>
             ) : (

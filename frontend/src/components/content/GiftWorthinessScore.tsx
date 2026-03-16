@@ -9,29 +9,51 @@ export default function GiftWorthinessScore({
   size = "md",
   showLabel = true,
 }: GiftWorthinessScoreProps) {
-  const getColor = (s: number) => {
-    if (s >= 9) return "text-green-600 bg-green-50 border-green-200";
-    if (s >= 8) return "text-blue-600 bg-blue-50 border-blue-200";
-    if (s >= 7) return "text-yellow-600 bg-yellow-50 border-yellow-200";
-    return "text-gray-600 bg-gray-50 border-gray-200";
+  const percentage = (score / 10) * 100;
+
+  const getBarColor = (s: number) => {
+    if (s >= 9) return "from-emerald-400 to-emerald-500";
+    if (s >= 8) return "from-blue-400 to-blue-500";
+    if (s >= 7) return "from-amber-400 to-amber-500";
+    return "from-gray-400 to-gray-500";
   };
 
-  const sizeClasses = {
-    sm: "text-sm px-2 py-1",
-    md: "text-base px-3 py-1.5",
-    lg: "text-lg px-4 py-2",
+  const getTextColor = (s: number) => {
+    if (s >= 9) return "text-emerald-600";
+    if (s >= 8) return "text-blue-600";
+    if (s >= 7) return "text-amber-600";
+    return "text-gray-600";
   };
+
+  const sizeConfig = {
+    sm: { text: "text-sm", bar: "h-1.5", scoreText: "text-base", wrapper: "gap-2" },
+    md: { text: "text-sm", bar: "h-2", scoreText: "text-xl", wrapper: "gap-3" },
+    lg: { text: "text-base", bar: "h-2.5", scoreText: "text-2xl", wrapper: "gap-4" },
+  };
+
+  const config = sizeConfig[size];
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center ${config.wrapper}`}>
       {showLabel && (
-        <span className="text-sm font-medium text-gray-600">Gift-Worthiness:</span>
+        <span className={`${config.text} font-medium text-gray-500 uppercase tracking-wider`}
+          style={{ fontSize: size === "sm" ? "0.65rem" : "0.7rem", letterSpacing: "0.08em" }}
+        >
+          Gift-Worthiness
+        </span>
       )}
-      <span
-        className={`inline-flex items-center font-bold border rounded-full ${getColor(score)} ${sizeClasses[size]}`}
-      >
-        {score}/10
-      </span>
+      <div className="flex items-center gap-2 flex-1">
+        <div className={`flex-1 max-w-[120px] bg-gray-100 rounded-full overflow-hidden ${config.bar}`}>
+          <div
+            className={`h-full rounded-full bg-gradient-to-r ${getBarColor(score)} transition-all duration-700 ease-out`}
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+        <span className={`${config.scoreText} font-bold ${getTextColor(score)} tabular-nums`}>
+          {score}
+          <span className="text-gray-400 font-normal" style={{ fontSize: "0.65em" }}>/10</span>
+        </span>
+      </div>
     </div>
   );
 }

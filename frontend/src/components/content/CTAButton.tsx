@@ -12,12 +12,13 @@ export default function CTAButton({
   className = "",
 }: CTAButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-colors text-center";
+    "inline-flex items-center justify-center gap-2 font-semibold text-center transition-all duration-300 min-h-[48px]";
 
   const variantClasses = {
-    primary: "px-6 py-3 bg-gold text-white hover:bg-gold-hover text-base",
+    primary:
+      "px-8 py-3.5 cta-shine text-white rounded-full text-base tracking-wide hover:shadow-lg",
     secondary:
-      "px-5 py-2.5 bg-white text-gold border-2 border-gold hover:bg-gold hover:text-white text-sm",
+      "px-6 py-3 bg-white text-gold border-2 border-gold hover:bg-gold hover:text-white rounded-full text-sm tracking-wide hover:shadow-md",
   };
 
   return (
@@ -27,7 +28,10 @@ export default function CTAButton({
       rel="nofollow sponsored noopener"
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
     >
-      {label} <span aria-hidden="true">&rarr;</span>
+      {label}
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
     </a>
   );
 }

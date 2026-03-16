@@ -25,40 +25,23 @@ export default function EmailSignup({
     e.preventDefault();
     if (!email) return;
 
-    // Honeypot check — if filled by a bot, silently succeed
-    if (honeypot) {
-      setSubmitted(true);
-      return;
-    }
-
     setLoading(true);
     setError("");
 
     try {
-      // ConvertKit integration (client-side)
-      const ckFormId = process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID;
-      if (ckFormId) {
-        const res = await fetch(
-          `https://api.convertkit.com/v3/forms/${ckFormId}/subscribe`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              api_key: process.env.NEXT_PUBLIC_CONVERTKIT_API_KEY,
-              email,
-            }),
-          }
-        );
-        if (!res.ok) {
-          setError("Subscription failed. Please try again.");
-          return;
-        }
-        setSubmitted(true);
-        return;
-      }
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, honeypot, source }),
+      });
 
-      // No provider configured — accept silently for now
-      setSubmitted(true);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+      } else {
+        setSubmitted(true);
+      }
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -110,50 +93,63 @@ export default function EmailSignup({
   }
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 md:p-8 my-8">
-      <h3 className="text-xl font-heading font-semibold text-navy mb-2">
-        {heading}
-      </h3>
-      <p className="text-sm text-gray-600 mb-4">{description}</p>
-      {submitted ? (
-        <p className="text-green-600 font-medium">
-          You&apos;re in! Check your inbox for a welcome email.
+    <div className="relative overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark rounded-2xl p-8 md:p-10 my-10 shadow-lg">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 bg-gold/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="h-px w-8 bg-gold/60" />
+          <span className="text-gold text-xs font-bold uppercase tracking-[0.12em]">Newsletter</span>
+        </div>
+        <h3 className="text-xl md:text-2xl font-heading font-semibold text-white mb-2">
+          {heading}
+        </h3>
+        <p className="text-sm text-gray-300 mb-6 max-w-lg leading-relaxed">{description}</p>
+        {submitted ? (
+          <div className="flex items-center gap-2 text-emerald-400 font-medium">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            You&apos;re in! Check your inbox for a welcome email.
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg">
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              className="absolute opacity-0 h-0 w-0 overflow-hidden"
+              aria-hidden="true"
+            />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Your email address"
+              required
+              className="flex-1 px-5 py-3.5 rounded-full bg-white/10 border border-white/15 text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all min-h-[48px]"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="px-7 py-3.5 cta-shine text-white font-semibold rounded-full text-sm whitespace-nowrap disabled:opacity-60 min-h-[48px]"
+            >
+              {loading ? "Subscribing..." : "Send Me Deals"}
+            </button>
+          </form>
+        )}
+        {error && (
+          <p className="text-red-400 text-xs mt-3">{error}</p>
+        )}
+        <p className="text-xs text-gray-500 mt-4">
+          Unsubscribe anytime. No spam, ever.
         </p>
-      ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-lg">
-          <input
-            type="text"
-            name="website"
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
-            tabIndex={-1}
-            autoComplete="off"
-            className="absolute opacity-0 h-0 w-0 overflow-hidden"
-            aria-hidden="true"
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email address"
-            required
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-3 bg-gold text-white font-semibold rounded-lg hover:bg-gold-hover transition-colors text-sm whitespace-nowrap disabled:opacity-60"
-          >
-            {loading ? "Subscribing..." : "Send Me Deals"}
-          </button>
-        </form>
-      )}
-      {error && (
-        <p className="text-red-500 text-xs mt-2">{error}</p>
-      )}
-      <p className="text-xs text-gray-400 mt-3">
-        Unsubscribe anytime. No spam, ever.
-      </p>
+      </div>
     </div>
   );
 }

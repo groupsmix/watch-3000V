@@ -5,19 +5,21 @@ interface ProsConsBoxProps {
 
 export default function ProsConsBox({ pros, cons }: ProsConsBoxProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
       {/* Pros */}
-      <div className="bg-green-50 border border-green-200 rounded-lg p-5">
-        <h4 className="text-green-800 font-semibold text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200/60 rounded-2xl p-6 shadow-sm">
+        <h4 className="text-emerald-700 font-bold text-xs uppercase tracking-[0.1em] mb-4 flex items-center gap-2.5">
+          <span className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center">
+            <svg className="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
           What We Love
         </h4>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {pros.map((pro, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-green-900">
-              <span className="text-green-500 mt-0.5 shrink-0">+</span>
+            <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700 leading-relaxed">
+              <span className="text-emerald-400 mt-1 shrink-0 text-lg leading-none">+</span>
               {pro}
             </li>
           ))}
@@ -25,17 +27,19 @@ export default function ProsConsBox({ pros, cons }: ProsConsBoxProps) {
       </div>
 
       {/* Cons */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-5">
-        <h4 className="text-red-800 font-semibold text-sm uppercase tracking-wider mb-3 flex items-center gap-2">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          What Could Be Better
+      <div className="bg-gradient-to-br from-rose-50 to-white border border-rose-200/60 rounded-2xl p-6 shadow-sm">
+        <h4 className="text-rose-700 font-bold text-xs uppercase tracking-[0.1em] mb-4 flex items-center gap-2.5">
+          <span className="w-7 h-7 rounded-full bg-rose-100 flex items-center justify-center">
+            <svg className="w-4 h-4 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+          Could Be Better
         </h4>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {cons.map((con, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-red-900">
-              <span className="text-red-500 mt-0.5 shrink-0">-</span>
+            <li key={i} className="flex items-start gap-2.5 text-sm text-gray-700 leading-relaxed">
+              <span className="text-rose-400 mt-1 shrink-0 text-lg leading-none">&minus;</span>
               {con}
             </li>
           ))}
