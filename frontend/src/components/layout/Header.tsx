@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const occasionLinks = [
-  { href: "/occasion/fathers-day", label: "Father\u2019s Day" },
+  { href: "/occasion/fathers-day", label: "Father’s Day" },
   { href: "/occasion/christmas", label: "Christmas" },
   { href: "/occasion/birthday", label: "Birthday" },
-  { href: "/occasion/valentines-day", label: "Valentine\u2019s Day" },
+  { href: "/occasion/valentines-day", label: "Valentine’s Day" },
   { href: "/occasion/anniversary", label: "Anniversary" },
   { href: "/occasion/graduation", label: "Graduation" },
 ];
@@ -55,25 +55,25 @@ function NavDropdown({ label, links, isOpen, onToggle, onClose }: DropdownProps)
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={onToggle}
-        className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-600 hover:text-navy transition-all duration-200 uppercase"
-        style={{ letterSpacing: "0.06em" }}
+        className="flex items-center gap-1.5 px-4 py-2 text-[0.7rem] font-medium text-ivory-dim hover:text-gold transition-all duration-300 uppercase tracking-[0.15em]"
       >
         {label}
         <svg
-          className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+          className={`w-3 h-3 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
       <div
-        className={`absolute left-0 top-full mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl z-50 transition-all duration-200 origin-top ${
+        className={`absolute left-0 top-full mt-3 w-60 bg-surface border border-gold/10 rounded-xl z-50 transition-all duration-300 origin-top ${
           isOpen
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
         }`}
+        style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.08)" }}
       >
         <div className="py-2">
           {links.map((link) => (
@@ -81,7 +81,7 @@ function NavDropdown({ label, links, isOpen, onToggle, onClose }: DropdownProps)
               key={link.href}
               href={link.href}
               onClick={onClose}
-              className="block px-5 py-2.5 text-sm text-gray-600 hover:text-navy hover:bg-gold-50 transition-all duration-200 border-l-2 border-transparent hover:border-gold"
+              className="block px-5 py-2.5 text-sm text-ivory-dim hover:text-gold hover:bg-gold/5 transition-all duration-200 border-l-2 border-transparent hover:border-gold"
             >
               {link.label}
             </Link>
@@ -111,41 +111,43 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "glass border-b border-gray-200/60 shadow-sm"
-          : "bg-white border-b border-gray-200"
+          ? "glass border-b border-gold/10"
+          : "bg-transparent"
       }`}
+      style={scrolled ? { boxShadow: "0 4px 30px rgba(0,0,0,0.3)" } : undefined}
     >
       {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-navy-dark via-navy to-navy-dark text-white text-center py-2.5 px-4 text-sm">
-        <span className="opacity-80">Free Gift Guide:</span>{" "}
-        <span className="font-medium">Find the perfect watch in 60 seconds</span>{" "}
+      <div className="bg-gold/5 border-b border-gold/10 text-center py-2 px-4">
+        <span className="text-[0.7rem] tracking-[0.15em] uppercase text-ivory-dim">Free Gift Guide</span>
+        <span className="mx-2 text-gold/30">|</span>
         <Link
           href="/gift-finder"
-          className="inline-flex items-center gap-1 underline font-semibold text-gold hover:text-gold-hover transition-colors ml-1"
+          className="text-[0.7rem] tracking-[0.1em] uppercase text-gold hover:text-gold-light transition-colors font-medium"
         >
           Take the Quiz
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg className="w-3 h-3 inline ml-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </Link>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[72px]">
+        <div className="flex items-center justify-between h-[76px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-bold font-heading text-navy tracking-tight">
+          <Link href="/" className="flex items-center gap-0.5 group">
+            <span className="text-2xl font-bold font-heading text-ivory tracking-tight">
               Wrist
             </span>
-            <span className="text-2xl font-bold font-heading gradient-text tracking-tight -ml-2">
+            <span className="text-2xl font-bold font-heading gradient-text tracking-tight">
               Nerd
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-gold ml-0.5 opacity-80 group-hover:opacity-100 transition-opacity" />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0">
             <NavDropdown
               label="By Occasion"
               links={occasionLinks}
@@ -169,22 +171,19 @@ export default function Header() {
             />
             <Link
               href="/reviews"
-              className="px-3 py-2 text-xs font-medium text-gray-600 hover:text-navy transition-all duration-200 uppercase"
-              style={{ letterSpacing: "0.06em" }}
+              className="px-4 py-2 text-[0.7rem] font-medium text-ivory-dim hover:text-gold transition-all duration-300 uppercase tracking-[0.15em]"
             >
               Reviews
             </Link>
             <Link
               href="/blog"
-              className="px-3 py-2 text-xs font-medium text-gray-600 hover:text-navy transition-all duration-200 uppercase"
-              style={{ letterSpacing: "0.06em" }}
+              className="px-4 py-2 text-[0.7rem] font-medium text-ivory-dim hover:text-gold transition-all duration-300 uppercase tracking-[0.15em]"
             >
               Blog
             </Link>
             <Link
               href="/deals"
-              className="px-3 py-2 text-xs font-medium text-gray-600 hover:text-navy transition-all duration-200 uppercase"
-              style={{ letterSpacing: "0.06em" }}
+              className="px-4 py-2 text-[0.7rem] font-medium text-ivory-dim hover:text-gold transition-all duration-300 uppercase tracking-[0.15em]"
             >
               Deals
             </Link>
@@ -193,18 +192,18 @@ export default function Header() {
           {/* Quiz CTA */}
           <Link
             href="/gift-finder"
-            className="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 cta-shine text-white text-sm font-semibold rounded-full hover:shadow-lg transition-all duration-300"
+            className="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 cta-shine text-sm font-semibold rounded-full hover:shadow-lg transition-all duration-300"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            Gift Finder Quiz
+            Gift Finder
           </Link>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2.5 text-gray-600 hover:text-navy rounded-lg hover:bg-gray-50 transition-all"
+            className="lg:hidden p-2.5 text-ivory-dim hover:text-gold rounded-lg hover:bg-gold/5 transition-all"
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
@@ -222,72 +221,55 @@ export default function Header() {
 
       {/* Mobile Nav */}
       <div
-        className={`lg:hidden bg-white border-t border-gray-100 transition-all duration-300 overflow-hidden ${
+        className={`lg:hidden bg-surface border-t border-gold/10 transition-all duration-300 overflow-hidden ${
           mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="px-5 py-6 space-y-1 overflow-y-auto max-h-[calc(80vh-2rem)]">
-          <p className="text-[0.65rem] font-bold text-gold uppercase tracking-[0.12em] px-3 pb-1">
-            By Occasion
-          </p>
+          <p className="label-luxury px-3 pb-2">By Occasion</p>
           {occasionLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block px-3 py-2.5 text-sm text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all"
+              className="block px-3 py-2.5 text-sm text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-
           <div className="section-divider my-4" />
-
-          <p className="text-[0.65rem] font-bold text-gold uppercase tracking-[0.12em] px-3 pb-1">
-            By Budget
-          </p>
+          <p className="label-luxury px-3 pb-2">By Budget</p>
           {budgetLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block px-3 py-2.5 text-sm text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all"
+              className="block px-3 py-2.5 text-sm text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-
           <div className="section-divider my-4" />
-
-          <p className="text-[0.65rem] font-bold text-gold uppercase tracking-[0.12em] px-3 pb-1">
-            By Recipient
-          </p>
+          <p className="label-luxury px-3 pb-2">By Recipient</p>
           {recipientLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block px-3 py-2.5 text-sm text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all"
+              className="block px-3 py-2.5 text-sm text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-
-          <div className="border-t border-gray-100 pt-4 mt-4 space-y-1">
-            <Link href="/reviews" className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all" onClick={() => setMobileOpen(false)}>
-              Reviews
-            </Link>
-            <Link href="/blog" className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all" onClick={() => setMobileOpen(false)}>
-              Blog
-            </Link>
-            <Link href="/deals" className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gold-50 hover:text-navy rounded-lg transition-all" onClick={() => setMobileOpen(false)}>
-              Deals
-            </Link>
+          <div className="border-t border-gold/10 pt-4 mt-4 space-y-1">
+            <Link href="/reviews" className="block px-3 py-2.5 text-sm font-medium text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all" onClick={() => setMobileOpen(false)}>Reviews</Link>
+            <Link href="/blog" className="block px-3 py-2.5 text-sm font-medium text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all" onClick={() => setMobileOpen(false)}>Blog</Link>
+            <Link href="/deals" className="block px-3 py-2.5 text-sm font-medium text-ivory-dim hover:bg-gold/5 hover:text-gold rounded-lg transition-all" onClick={() => setMobileOpen(false)}>Deals</Link>
           </div>
           <div className="pt-4">
             <Link
               href="/gift-finder"
-              className="flex w-full text-center px-6 py-3.5 cta-shine text-white font-semibold rounded-full min-h-[48px] items-center justify-center gap-2"
+              className="flex w-full text-center px-6 py-3.5 cta-shine font-semibold rounded-full min-h-[48px] items-center justify-center gap-2"
               onClick={() => setMobileOpen(false)}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

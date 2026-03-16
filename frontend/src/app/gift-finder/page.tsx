@@ -282,17 +282,17 @@ export default function GiftFinderPage() {
     const results = getRecommendations(answers as Answers);
 
     return (
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 lg:pb-20">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-8 bg-gold/50" />
             <span className="text-gold text-xs font-bold uppercase tracking-[0.15em]">Your Results</span>
             <div className="h-px w-8 bg-gold/50" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-heading font-bold text-navy mb-4">
+          <h1 className="text-3xl md:text-4xl font-heading font-bold text-ivory mb-4">
             Your Perfect Watch Matches
           </h1>
-          <p className="text-gray-500 leading-relaxed">
+          <p className="text-ivory-dim/60 leading-relaxed">
             Based on your answers, here are the watches we recommend &mdash; sorted by
             Gift-Worthiness Score.
           </p>
@@ -304,7 +304,7 @@ export default function GiftFinderPage() {
               key={watch.slug}
               className={`luxury-card p-6 md:p-8 ${
                 i === 0
-                  ? "border-gold/40 bg-gradient-to-br from-gold-50/50 to-white ring-1 ring-gold/20"
+                  ? "border-gold/40 bg-gold/5 ring-1 ring-gold/20"
                   : ""
               }`}
             >
@@ -314,36 +314,36 @@ export default function GiftFinderPage() {
                 </span>
               )}
               {i === 1 && (
-                <span className="inline-block px-3 py-1 bg-navy text-white text-xs font-bold rounded-full mb-4 uppercase tracking-[0.08em]">
+                <span className="inline-block px-3 py-1 bg-ivory-dim/20 text-ivory text-xs font-bold rounded-full mb-4 uppercase tracking-[0.08em]">
                   Runner-Up
                 </span>
               )}
               {i === 2 && (
-                <span className="inline-block px-3 py-1 bg-gray-400 text-white text-xs font-bold rounded-full mb-4 uppercase tracking-[0.08em]">
+                <span className="inline-block px-3 py-1 bg-ivory-dim/10 text-ivory-dim text-xs font-bold rounded-full mb-4 uppercase tracking-[0.08em]">
                   Also Consider
                 </span>
               )}
 
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-44 h-44 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl flex items-center justify-center shrink-0">
-                  <span className="text-gray-300 text-sm">Watch Image</span>
+                <div className="w-full md:w-44 h-44 bg-gradient-to-br from-surface to-surface-elevated rounded-2xl flex items-center justify-center shrink-0">
+                  <span className="text-ivory-dim/20 text-sm">Watch Image</span>
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-xl font-heading font-semibold text-navy mb-2">
+                  <h2 className="text-xl font-heading font-semibold text-ivory mb-2">
                     {watch.name}
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <span className="text-sm font-bold text-emerald-600">
+                    <span className="text-sm font-bold text-gold">
                       Gift Score: {watch.gift_worthiness_score}/10
                     </span>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-ivory-dim/50">
                       {watch.price_range}
                     </span>
-                    <span className="text-xs text-gray-400 capitalize px-2 py-0.5 bg-gray-100 rounded-full">
+                    <span className="text-xs text-ivory-dim/40 capitalize px-2 py-0.5 bg-surface rounded-full">
                       {watch.movement}
                     </span>
                   </div>
-                  <p className="text-gray-600 mb-5 leading-relaxed">{watch.one_liner}</p>
+                  <p className="text-ivory-dim/60 mb-5 leading-relaxed">{watch.one_liner}</p>
                   <div className="flex flex-wrap gap-3">
                     <a
                       href="#"
@@ -358,7 +358,7 @@ export default function GiftFinderPage() {
                     </a>
                     <Link
                       href={watch.slug}
-                      className="inline-flex items-center px-6 py-3 border-2 border-navy text-navy font-semibold rounded-full hover:bg-navy hover:text-white transition-all duration-300 text-sm min-h-[48px]"
+                      className="inline-flex items-center px-6 py-3 border border-gold/30 text-ivory font-semibold rounded-full hover:bg-gold/5 hover:border-gold/50 transition-all duration-300 text-sm min-h-[48px]"
                     >
                       Read Full Review
                     </Link>
@@ -370,8 +370,8 @@ export default function GiftFinderPage() {
         </div>
 
         {results.length === 0 && (
-          <div className="text-center py-16 bg-gray-50 rounded-2xl">
-            <p className="text-gray-500 mb-6 leading-relaxed">
+          <div className="text-center py-16 bg-surface rounded-2xl">
+            <p className="text-ivory-dim/60 mb-6 leading-relaxed">
               We couldn&apos;t find watches matching all your criteria. Try adjusting
               your budget or style preference.
             </p>
@@ -387,11 +387,11 @@ export default function GiftFinderPage() {
         <div className="mt-12 text-center space-y-4">
           <button
             onClick={resetQuiz}
-            className="text-gold hover:text-gold-dark font-semibold transition-colors duration-200"
+            className="text-gold hover:text-gold/80 font-semibold transition-colors duration-200"
           >
             &larr; Retake the Quiz
           </button>
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-ivory-dim/40">
             <Link href="/reviews" className="hover:text-gold transition-colors duration-200">
               See All Reviews
             </Link>
@@ -413,17 +413,17 @@ export default function GiftFinderPage() {
   const step = steps[currentStep];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16 lg:pb-20">
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 bg-gold/50" />
           <span className="text-gold text-xs font-bold uppercase tracking-[0.15em]">60-Second Quiz</span>
           <div className="h-px w-8 bg-gold/50" />
         </div>
-        <h1 className="text-3xl md:text-4xl font-heading font-bold text-navy mb-3">
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-ivory mb-3">
           Watch Gift Finder Quiz
         </h1>
-        <p className="text-gray-500 leading-relaxed">
+        <p className="text-ivory-dim/60 leading-relaxed">
           Answer 4 quick questions and get personalized watch recommendations in
           60 seconds.
         </p>
@@ -435,16 +435,16 @@ export default function GiftFinderPage() {
           <div
             key={i}
             className={`flex-1 h-1.5 rounded-full transition-all duration-500 ${
-              i <= currentStep ? "bg-gradient-to-r from-gold to-gold-hover" : "bg-gray-200"
+              i <= currentStep ? "bg-gradient-to-r from-gold to-gold-hover" : "bg-surface-elevated"
             }`}
           />
         ))}
       </div>
 
-      <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider font-medium">
+      <p className="text-xs text-ivory-dim/40 mb-2 uppercase tracking-wider font-medium">
         Step {currentStep + 1} of {steps.length}
       </p>
-      <h2 className="text-2xl font-heading font-semibold text-navy mb-6">
+      <h2 className="text-2xl font-heading font-semibold text-ivory mb-6">
         {step.title}
       </h2>
 
@@ -453,9 +453,9 @@ export default function GiftFinderPage() {
           <button
             key={option.value}
             onClick={() => handleSelect(option.value)}
-            className="luxury-card p-5 text-left group hover:border-gold/50 hover:bg-gold-50/30"
+            className="luxury-card p-5 text-left group hover:border-gold/50 hover:bg-gold/5"
           >
-            <span className="text-base font-medium text-navy group-hover:text-gold transition-colors duration-300">
+            <span className="text-base font-medium text-ivory group-hover:text-gold transition-colors duration-300">
               {option.label}
             </span>
           </button>
@@ -465,7 +465,7 @@ export default function GiftFinderPage() {
       {currentStep > 0 && (
         <button
           onClick={() => setCurrentStep(currentStep - 1)}
-          className="mt-8 text-sm text-gray-400 hover:text-gold transition-colors duration-200 flex items-center gap-1"
+          className="mt-8 text-sm text-ivory-dim/40 hover:text-gold transition-colors duration-200 flex items-center gap-1"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

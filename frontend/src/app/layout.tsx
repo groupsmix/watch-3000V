@@ -52,7 +52,7 @@ export default function RootLayout({
           <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen bg-black-rich text-ivory">{children}</main>
         <Footer />
       </body>
     </html>
