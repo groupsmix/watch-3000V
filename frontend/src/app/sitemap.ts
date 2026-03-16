@@ -9,6 +9,8 @@ import {
   getAllComparisons,
 } from "@/lib/content";
 
+export const dynamic = "force-static";
+
 const BASE_URL = "https://wristnerd.xyz";
 
 export default function sitemap(): MetadataRoute.Sitemap {
