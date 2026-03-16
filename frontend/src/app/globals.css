@@ -221,7 +221,49 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose ul, .prose ol {
   margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
+  padding-left: 1.75rem;
+}
+
+.prose ul {
+  list-style: none;
+}
+
+.prose ul li {
+  position: relative;
+  padding-left: 0.25rem;
+}
+
+.prose ul li::before {
+  content: '';
+  position: absolute;
+  left: -1.25rem;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-hover) 100%);
+  opacity: 0.7;
+}
+
+.prose ol {
+  list-style: none;
+  counter-reset: prose-counter;
+}
+
+.prose ol li {
+  counter-increment: prose-counter;
+  position: relative;
+  padding-left: 0.25rem;
+}
+
+.prose ol li::before {
+  content: counter(prose-counter) '.';
+  position: absolute;
+  left: -1.5rem;
+  top: 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-gold);
 }
 
 .prose li {
@@ -290,6 +332,42 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(to right, transparent, var(--color-gold), transparent);
   margin: 3.5rem 0;
   opacity: 0.4;
+}
+
+.prose code {
+  font-size: 0.875em;
+  background: linear-gradient(135deg, var(--color-gold-50), var(--color-pearl));
+  color: var(--color-navy);
+  padding: 0.2em 0.5em;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid var(--color-pearl);
+}
+
+.prose pre {
+  background: var(--color-navy);
+  color: var(--color-gray-300);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  border: 1px solid var(--color-navy-light);
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose img {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin: 2rem 0;
 }
 
 /* === TABLE RESPONSIVE === */

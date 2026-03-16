@@ -49,8 +49,12 @@ export default function BlogIndexPage() {
                 href={`/blog/${post.slug}`}
                 className="group luxury-card overflow-hidden"
               >
-                <div className="aspect-video bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center">
-                  <span className="text-gray-300 text-sm font-light">Blog Image</span>
+                <div className="aspect-video bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-pearl/80 via-gray-100 to-pearl/60" />
+                  <svg className="w-14 h-14 text-gray-200 group-hover:text-gold/30 transition-colors duration-500 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.75}>
+                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                  <div className="absolute bottom-0 left-0 w-20 h-20 bg-gold/[0.04] rounded-full translate-y-1/2 -translate-x-1/2 blur-xl" />
                 </div>
                 <div className="p-6">
                   <h2 className="text-lg font-heading font-semibold text-navy group-hover:text-gold transition-colors duration-300 mb-2">

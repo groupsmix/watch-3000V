@@ -21,11 +21,11 @@ const occasions = [
 ];
 
 const budgets = [
-  { href: "/budget/under-100", label: "Under $100", desc: "Great starter watches", accent: "from-emerald-50 to-emerald-100/50" },
-  { href: "/budget/under-200", label: "Under $200", desc: "Sweet spot for gifts", accent: "from-blue-50 to-blue-100/50" },
-  { href: "/budget/under-300", label: "Under $300", desc: "Premium quality", accent: "from-indigo-50 to-indigo-100/50" },
-  { href: "/budget/under-500", label: "Under $500", desc: "Luxury territory", accent: "from-purple-50 to-purple-100/50" },
-  { href: "/budget/luxury-500-plus", label: "$500+", desc: "The best of the best", accent: "from-gold-50 to-amber-100/50" },
+  { href: "/budget/under-100", label: "Under $100", desc: "Great starter watches", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  { href: "/budget/under-200", label: "Under $200", desc: "Sweet spot for gifts", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  { href: "/budget/under-300", label: "Under $300", desc: "Premium quality", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  { href: "/budget/under-500", label: "Under $500", desc: "Luxury territory", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+  { href: "/budget/luxury-500-plus", label: "$500+", desc: "The best of the best", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
 ];
 
 const editorsPicks = [
@@ -208,8 +208,13 @@ export default function HomePage() {
               <Link
                 key={b.href}
                 href={b.href}
-                className={`luxury-card flex flex-col items-center p-7 lg:p-8 group bg-gradient-to-br ${b.accent}`}
+                className="luxury-card flex flex-col items-center p-7 lg:p-8 group bg-gradient-to-br from-white to-ivory"
               >
+                <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold/10 to-gold/5 flex items-center justify-center mb-4 group-hover:from-gold/20 group-hover:to-gold/10 transition-all duration-500">
+                  <svg className="w-5 h-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={b.icon} />
+                  </svg>
+                </span>
                 <span className="text-xl font-bold text-navy group-hover:text-gold transition-colors duration-300 mb-1 font-heading">
                   {b.label}
                 </span>
@@ -237,16 +242,26 @@ export default function HomePage() {
               on hands-on research and our Gift-Worthiness Score.
             </p>
           </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
           {editorsPicks.map((watch) => (
             <Link
               key={watch.href}
               href={watch.href}
               className="group luxury-card overflow-hidden"
             >
-              <div className="relative aspect-square bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center">
-                <span className="text-gray-300 text-sm font-light">Watch Image</span>
-                <span className="gold-badge absolute top-4 left-4">
+              <div className="relative aspect-square bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-pearl/80 via-gray-50 to-pearl/60" />
+                <svg className="w-20 h-20 text-gray-200 group-hover:text-gold/25 transition-colors duration-500 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.5}>
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 3" />
+                  <path d="M12 3v1" />
+                  <path d="M12 20v1" />
+                  <path d="M3 12h1" />
+                  <path d="M20 12h1" />
+                </svg>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gold/[0.04] rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-navy/[0.03] rounded-full translate-y-1/2 -translate-x-1/2 blur-xl" />
+                <span className="gold-badge absolute top-4 left-4 z-20">
                   {watch.badge}
                 </span>
               </div>
@@ -267,7 +282,7 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
-        </div>
+          </div>
         </div>
       </section>
 

@@ -18,12 +18,28 @@ export default async function PrivacyPolicyPage() {
   const schema = getSchemaFromPage(page);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
       {schema && <SchemaMarkup schema={schema} />}
-      <Breadcrumb items={[{ label: "Privacy Policy" }]} />
-      <article className="prose max-w-none">
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-      </article>
-    </div>
+
+      <section className="bg-gradient-to-br from-navy-dark via-navy to-navy-light text-white py-12 md:py-16 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute bottom-10 left-20 w-64 h-64 bg-gold rounded-full blur-3xl" />
+        </div>
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumb items={[{ label: "Privacy Policy" }]} />
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight">
+            Privacy Policy
+          </h1>
+        </div>
+      </section>
+
+      <div className="bg-ivory">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <article className="prose max-w-none">
+            <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          </article>
+        </div>
+      </div>
+    </>
   );
 }

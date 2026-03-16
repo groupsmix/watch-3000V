@@ -49,8 +49,17 @@ export default function ReviewsIndexPage() {
                 href={`/reviews/${review.slug}`}
                 className="group luxury-card overflow-hidden"
               >
-                <div className="aspect-video bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center">
-                  <span className="text-gray-300 text-sm font-light">Watch Image</span>
+                <div className="aspect-video bg-gradient-to-br from-pearl to-gray-100 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-pearl/80 via-gray-100 to-pearl/60" />
+                  <svg className="w-16 h-16 text-gray-200 group-hover:text-gold/30 transition-colors duration-500 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.75}>
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 3" />
+                    <path d="M12 3v1" />
+                    <path d="M12 20v1" />
+                    <path d="M3 12h1" />
+                    <path d="M20 12h1" />
+                  </svg>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gold/[0.04] rounded-full -translate-y-1/2 translate-x-1/2 blur-xl" />
                 </div>
                 <div className="p-6">
                   <h2 className="text-lg font-heading font-semibold text-navy group-hover:text-gold transition-colors duration-300 mb-2">

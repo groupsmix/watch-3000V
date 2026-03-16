@@ -326,9 +326,18 @@ export default function GiftFinderPage() {
               )}
 
               <div className="flex flex-col md:flex-row gap-6">
-                  <div className="w-full md:w-44 h-44 bg-gradient-to-br from-pearl to-gray-100 rounded-2xl flex items-center justify-center shrink-0">
-                    <span className="text-gray-300 text-sm font-light">Watch Image</span>
-                </div>
+                  <div className="w-full md:w-44 h-44 bg-gradient-to-br from-pearl to-gray-100 rounded-2xl flex items-center justify-center shrink-0 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-pearl/80 via-gray-50 to-pearl/60" />
+                    <svg className="w-14 h-14 text-gray-200 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.75}>
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 3" />
+                      <path d="M12 3v1" />
+                      <path d="M12 20v1" />
+                      <path d="M3 12h1" />
+                      <path d="M20 12h1" />
+                    </svg>
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gold/[0.05] rounded-full -translate-y-1/2 translate-x-1/2 blur-xl" />
+                  </div>
                 <div className="flex-1">
                   <h2 className="text-xl font-heading font-semibold text-navy mb-2">
                     {watch.name}
