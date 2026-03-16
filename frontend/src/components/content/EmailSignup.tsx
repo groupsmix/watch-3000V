@@ -25,23 +25,40 @@ export default function EmailSignup({
     e.preventDefault();
     if (!email) return;
 
+    // Honeypot check — if filled by a bot, silently succeed
+    if (honeypot) {
+      setSubmitted(true);
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, honeypot, source }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
-      } else {
+      // ConvertKit integration (client-side)
+      const ckFormId = process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID;
+      if (ckFormId) {
+        const res = await fetch(
+          `https://api.convertkit.com/v3/forms/${ckFormId}/subscribe`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              api_key: process.env.NEXT_PUBLIC_CONVERTKIT_API_KEY,
+              email,
+            }),
+          }
+        );
+        if (!res.ok) {
+          setError("Subscription failed. Please try again.");
+          return;
+        }
         setSubmitted(true);
+        return;
       }
+
+      // No provider configured — accept silently for now
+      setSubmitted(true);
     } catch {
       setError("Network error. Please try again.");
     } finally {
