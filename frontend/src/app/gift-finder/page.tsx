@@ -15,6 +15,7 @@ interface WatchEntry {
   recipients: string[];
   gift_worthiness_score: number;
   one_liner: string;
+  affiliateUrl: string;
 }
 
 const watchDatabase: WatchEntry[] = [
@@ -30,6 +31,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "boyfriend", "self"],
     gift_worthiness_score: 9.2,
     one_liner: "Cocktail-inspired automatic with a color-shifting dial that photographs beautifully.",
+    affiliateUrl: "https://www.amazon.com/dp/B07QK4BXG5?tag=wristnerd-20",
   },
   {
     name: "Orient Bambino V2",
@@ -43,6 +45,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "boyfriend", "son", "friend", "self"],
     gift_worthiness_score: 9.1,
     one_liner: "The best automatic dress watch under $200 — period.",
+    affiliateUrl: "https://www.amazon.com/dp/B01MZGZHQC?tag=wristnerd-20",
   },
   {
     name: "Tissot PRX Powermatic 80",
@@ -56,6 +59,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "boyfriend", "self"],
     gift_worthiness_score: 9.3,
     one_liner: "Swiss automatic with '70s-inspired integrated bracelet design.",
+    affiliateUrl: "https://www.amazon.com/dp/B09GFNP3RG?tag=wristnerd-20",
   },
   {
     name: "Hamilton Khaki Field Mechanical",
@@ -69,6 +73,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "boyfriend", "son", "self"],
     gift_worthiness_score: 9.0,
     one_liner: "Military heritage meets Swiss craftsmanship in a slim, hand-wound package.",
+    affiliateUrl: "https://www.amazon.com/dp/B000J179X6?tag=wristnerd-20",
   },
   {
     name: "Citizen Eco-Drive BM8180",
@@ -82,6 +87,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["dad", "friend", "son", "self"],
     gift_worthiness_score: 7.8,
     one_liner: "Solar-powered field watch — reliable, affordable, no-fuss daily wearer.",
+    affiliateUrl: "https://www.amazon.com/dp/B000EQS1JW?tag=wristnerd-20",
   },
   {
     name: "Seiko 5 Sports SRPD55",
@@ -95,6 +101,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["boyfriend", "son", "friend", "self"],
     gift_worthiness_score: 8.4,
     one_liner: "Modern sports automatic with 100m WR and day-date complication.",
+    affiliateUrl: "https://www.amazon.com/dp/B07WGMQBPF?tag=wristnerd-20",
   },
   {
     name: "Casio G-Shock GA2100",
@@ -108,6 +115,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["boyfriend", "son", "friend", "self"],
     gift_worthiness_score: 7.5,
     one_liner: "The 'CasiOak' — slim G-Shock with an AP Royal Oak-inspired octagonal bezel.",
+    affiliateUrl: "https://www.amazon.com/dp/B07WGJR9R2?tag=wristnerd-20",
   },
   {
     name: "Bulova Lunar Pilot",
@@ -121,6 +129,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "self"],
     gift_worthiness_score: 8.6,
     one_liner: "Moon-worn chronograph heritage with UHF 262kHz precision movement.",
+    affiliateUrl: "https://www.amazon.com/dp/B01AJE27FM?tag=wristnerd-20",
   },
   {
     name: "Timex Marlin Automatic",
@@ -134,6 +143,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["boyfriend", "son", "friend", "self"],
     gift_worthiness_score: 8.2,
     one_liner: "Retro-inspired automatic with exhibition caseback and mid-century styling.",
+    affiliateUrl: "https://www.amazon.com/dp/B083XVJQPD?tag=wristnerd-20",
   },
   {
     name: "Tissot Gentleman Powermatic 80",
@@ -147,6 +157,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "self"],
     gift_worthiness_score: 9.4,
     one_liner: "Swiss automatic with sapphire crystal and finishing that rivals $2,000 watches.",
+    affiliateUrl: "https://www.amazon.com/dp/B084BNQFWV?tag=wristnerd-20",
   },
   {
     name: "Citizen Eco-Drive Chandler",
@@ -160,6 +171,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["dad", "friend", "self"],
     gift_worthiness_score: 7.9,
     one_liner: "Solar-powered field watch — zero maintenance, 100m WR, reliable daily wearer.",
+    affiliateUrl: "https://www.amazon.com/dp/B00KCF7JL6?tag=wristnerd-20",
   },
   {
     name: "Fossil Neutra Chronograph",
@@ -173,6 +185,7 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["boyfriend", "friend", "son", "self"],
     gift_worthiness_score: 7.4,
     one_liner: "Minimalist fashion chronograph — clean design, decent quality, easy gift.",
+    affiliateUrl: "https://www.amazon.com/dp/B07B9X584N?tag=wristnerd-20",
   },
 ];
 
@@ -356,7 +369,7 @@ export default function GiftFinderPage() {
                   <p className="text-gray-600 mb-5 leading-relaxed font-light">{watch.one_liner}</p>
                   <div className="flex flex-wrap gap-3">
                     <a
-                      href="#"
+                      href={watch.affiliateUrl}
                       rel="nofollow sponsored noopener"
                       target="_blank"
                       className="inline-flex items-center gap-2 px-6 py-3 cta-shine text-white font-semibold rounded-full text-sm min-h-[48px] hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] transition-all duration-500"

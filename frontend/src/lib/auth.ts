@@ -54,7 +54,24 @@ export async function signToken(user: AuthUser): Promise<string> {
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, getSecretKey());
-    return payload as unknown as JWTPayload;
+
+    // Validate payload shape at runtime instead of unsafe cast
+    if (
+      typeof payload.email !== "string" ||
+      typeof payload.name !== "string" ||
+      typeof payload.role !== "string" ||
+      !["admin", "editor", "viewer"].includes(payload.role)
+    ) {
+      return null;
+    }
+
+    return {
+      email: payload.email,
+      name: payload.name,
+      role: payload.role as UserRole,
+      iat: payload.iat as number,
+      exp: payload.exp as number,
+    };
   } catch {
     return null;
   }

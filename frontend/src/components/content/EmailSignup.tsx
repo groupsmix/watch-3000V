@@ -25,25 +25,25 @@ export default function EmailSignup({
     e.preventDefault();
     if (!email) return;
 
+    // Bot honeypot check
+    if (honeypot) {
+      setSubmitted(true);
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, honeypot, source }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
-      } else {
-        setSubmitted(true);
-      }
+      // Store signup locally until a real backend endpoint is configured.
+      // TODO: Replace with a real subscribe endpoint (e.g. Mailchimp, ConvertKit,
+      // or a Cloudflare Worker) when available. The static export has no /api routes.
+      const stored = JSON.parse(localStorage.getItem("pendingSubscribers") || "[]");
+      stored.push({ email, source, timestamp: new Date().toISOString() });
+      localStorage.setItem("pendingSubscribers", JSON.stringify(stored));
+      setSubmitted(true);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
