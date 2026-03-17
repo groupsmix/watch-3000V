@@ -1,9 +1,30 @@
 import { remark } from "remark";
 import html from "remark-html";
 
+/**
+ * Strip dangerous URL protocols (javascript:, data:, vbscript:) from href/src
+ * attributes as a defense-in-depth layer on top of remark-html's sanitize option.
+ */
+function stripDangerousUrls(htmlString: string): string {
+  return htmlString.replace(
+    /(href|src)\s*=\s*"([^"]*)"/gi,
+    (_match, attr: string, url: string) => {
+      const trimmed = url.replace(/\s/g, "").toLowerCase();
+      if (
+        trimmed.startsWith("javascript:") ||
+        trimmed.startsWith("data:") ||
+        trimmed.startsWith("vbscript:")
+      ) {
+        return `${attr}="#"`;
+      }
+      return _match;
+    }
+  );
+}
+
 export async function markdownToHtml(markdown: string): Promise<string> {
   const result = await remark().use(html, { sanitize: true }).process(markdown);
-  return result.toString();
+  return stripDangerousUrls(result.toString());
 }
 
 // Extract JSON-LD schema from markdown content
