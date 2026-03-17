@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, Watch } from "lucide-react";
-import { validateCredentials, signToken, saveToken } from "@/lib/auth";
+import { login } from "@/lib/auth";
 
 export default function LoginPage() {
   return (
@@ -58,15 +58,13 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const user = validateCredentials(email, password);
-      if (!user) {
-        setError("Invalid email or password");
+      const result = await login(email, password);
+
+      if ("error" in result) {
+        setError(result.error);
         setLoading(false);
         return;
       }
-
-      const token = await signToken(user);
-      saveToken(token);
 
       router.push(redirectTo);
       router.refresh();

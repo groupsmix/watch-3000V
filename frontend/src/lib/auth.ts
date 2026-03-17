@@ -1,5 +1,3 @@
-import { SignJWT, jwtVerify } from "jose";
-
 export type UserRole = "admin" | "editor" | "viewer";
 
 export interface AuthUser {
@@ -8,165 +6,56 @@ export interface AuthUser {
   role: UserRole;
 }
 
-export interface JWTPayload {
-  email: string;
-  name: string;
-  role: UserRole;
-  iat: number;
-  exp: number;
-}
+/**
+ * Call the server-side login API.
+ * Credentials are validated on the server; the JWT is stored in an HTTP-only cookie.
+ */
+export async function login(
+  email: string,
+  password: string
+): Promise<{ user: AuthUser } | { error: string }> {
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
-const JWT_SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET;
+  const data = await res.json();
 
-if (!JWT_SECRET_KEY && typeof window !== "undefined") {
-  console.error(
-    "[AUTH] NEXT_PUBLIC_JWT_SECRET is not set. Authentication will not work. " +
-    "Set this environment variable before deploying."
-  );
-}
-const AUTH_STORAGE_KEY = "wristnerd-auth-token";
-const TOKEN_COOKIE_NAME = "wristnerd-auth-token";
-const TOKEN_EXPIRY = "24h";
-
-function getSecretKey(): Uint8Array {
-  if (!JWT_SECRET_KEY) {
-    throw new Error(
-      "[AUTH] NEXT_PUBLIC_JWT_SECRET is not configured. Cannot sign or verify tokens."
-    );
+  if (!res.ok) {
+    return { error: data.error || "Login failed" };
   }
-  return new TextEncoder().encode(JWT_SECRET_KEY);
+
+  return { user: data.user };
 }
 
-export async function signToken(user: AuthUser): Promise<string> {
-  const token = await new SignJWT({
-    email: user.email,
-    name: user.name,
-    role: user.role,
-  })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(TOKEN_EXPIRY)
-    .sign(getSecretKey());
-
-  return token;
-}
-
-export async function verifyToken(token: string): Promise<JWTPayload | null> {
+/**
+ * Verify the current session by checking the HTTP-only auth cookie server-side.
+ */
+export async function verifySession(): Promise<AuthUser | null> {
   try {
-    const { payload } = await jwtVerify(token, getSecretKey());
-    if (
-      typeof payload.email !== "string" ||
-      typeof payload.name !== "string" ||
-      typeof payload.role !== "string" ||
-      !["admin", "editor", "viewer"].includes(payload.role)
-    ) {
-      return null;
-    }
-    return {
-      email: payload.email,
-      name: payload.name,
-      role: payload.role as UserRole,
-      iat: payload.iat ?? 0,
-      exp: payload.exp ?? 0,
-    };
+    const res = await fetch("/api/auth/verify", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.user ?? null;
   } catch {
     return null;
   }
 }
 
-/** Save token to localStorage (client-side, static-export compatible) */
-export function saveToken(token: string): void {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(AUTH_STORAGE_KEY, token);
-  }
-}
-
-/** Read token from localStorage */
-export function getStoredToken(): string | null {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem(AUTH_STORAGE_KEY);
-  }
-  return null;
-}
-
-/** Remove token from localStorage */
-export function removeToken(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-  }
-}
-
-interface StoredUser {
-  email: string;
-  name: string;
-  password: string;
-  role: UserRole;
-}
-
-function getUsers(): StoredUser[] {
-  const users: StoredUser[] = [];
-
-  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-  const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
-  if (adminEmail && adminPassword) {
-    users.push({
-      email: adminEmail,
-      name: process.env.NEXT_PUBLIC_ADMIN_NAME || "Admin",
-      password: adminPassword,
-      role: "admin",
-    });
-  }
-
-  const editorEmail = process.env.NEXT_PUBLIC_EDITOR_EMAIL;
-  const editorPassword = process.env.NEXT_PUBLIC_EDITOR_PASSWORD;
-  if (editorEmail && editorPassword) {
-    users.push({
-      email: editorEmail,
-      name: process.env.NEXT_PUBLIC_EDITOR_NAME || "Editor",
-      password: editorPassword,
-      role: "editor",
-    });
-  }
-
-  const viewerEmail = process.env.NEXT_PUBLIC_VIEWER_EMAIL;
-  const viewerPassword = process.env.NEXT_PUBLIC_VIEWER_PASSWORD;
-  if (viewerEmail && viewerPassword) {
-    users.push({
-      email: viewerEmail,
-      name: process.env.NEXT_PUBLIC_VIEWER_NAME || "Viewer",
-      password: viewerPassword,
-      role: "viewer",
-    });
-  }
-
-  // No fallback demo accounts — env vars are required for all credentials.
-  // If no users are configured, authentication is effectively disabled.
-  if (users.length === 0 && typeof window !== "undefined") {
-    console.warn(
-      "[AUTH] No user credentials configured. Set NEXT_PUBLIC_ADMIN_EMAIL and " +
-      "NEXT_PUBLIC_ADMIN_PASSWORD environment variables to enable login."
-    );
-  }
-
-  return users;
-}
-
-export function validateCredentials(
-  email: string,
-  password: string
-): AuthUser | null {
-  const users = getUsers();
-  const user = users.find(
-    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-  );
-
-  if (!user) return null;
-
-  return {
-    email: user.email,
-    name: user.name,
-    role: user.role,
-  };
+/**
+ * Log out by clearing the server-side auth cookie.
+ */
+export async function logout(): Promise<void> {
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  });
 }
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
@@ -199,8 +88,4 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
 
 export function hasPermission(role: UserRole, permission: string): boolean {
   return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
-}
-
-export function getTokenCookieName(): string {
-  return TOKEN_COOKIE_NAME;
 }

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getStoredToken, verifyToken, removeToken } from "@/lib/auth";
+import { verifySession, logout as authLogout } from "@/lib/auth";
 
 export type UserRole = "admin" | "editor" | "viewer";
 
@@ -33,21 +33,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const token = getStoredToken();
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-      const payload = await verifyToken(token);
-      if (payload) {
-        setUser({ email: payload.email, name: payload.name, role: payload.role });
+      const sessionUser = await verifySession();
+      if (sessionUser) {
+        setUser(sessionUser);
       } else {
-        removeToken();
         setUser(null);
       }
     } catch {
-      removeToken();
       setUser(null);
     } finally {
       setLoading(false);
@@ -59,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshUser]);
 
   const logout = useCallback(async () => {
-    removeToken();
+    await authLogout();
     setUser(null);
     router.push("/login");
     router.refresh();
