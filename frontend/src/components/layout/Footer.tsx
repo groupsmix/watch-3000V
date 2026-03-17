@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 const giftGuideLinks = [
   { href: "/occasion/fathers-day", label: "Father’s Day Watches" },
@@ -26,6 +27,20 @@ const companyLinks = [
 ];
 
 export default function Footer() {
+  const [footerEmail, setFooterEmail] = useState("");
+  const [footerSubmitted, setFooterSubmitted] = useState(false);
+
+  const handleFooterSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!footerEmail) return;
+    const stored = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
+    if (!stored.includes(footerEmail)) {
+      stored.push(footerEmail);
+      localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
+    }
+    setFooterSubmitted(true);
+  };
+
   return (
     <footer className="relative bg-navy text-white overflow-hidden">
       {/* Decorative glow */}
@@ -123,19 +138,28 @@ export default function Footer() {
                 Price drops, seasonal picks, and gift guides &mdash; delivered when it matters.
               </p>
             </div>
-            <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 px-5 py-3.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/20 transition-all duration-300"
-              />
-              <button
-                type="submit"
-                className="px-7 py-3.5 cta-shine text-white font-semibold rounded-xl text-sm whitespace-nowrap tracking-wide"
-              >
-                Subscribe
-              </button>
-            </form>
+            {footerSubmitted ? (
+              <p className="text-emerald-400 font-medium text-sm py-3">
+                You&apos;re in! We&apos;ll send you the best deals.
+              </p>
+            ) : (
+              <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleFooterSubscribe}>
+                <input
+                  type="email"
+                  value={footerEmail}
+                  onChange={(e) => setFooterEmail(e.target.value)}
+                  placeholder="Your email address"
+                  required
+                  className="flex-1 px-5 py-3.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/20 transition-all duration-300"
+                />
+                <button
+                  type="submit"
+                  className="px-7 py-3.5 cta-shine text-white font-semibold rounded-xl text-sm whitespace-nowrap tracking-wide"
+                >
+                  Subscribe
+                </button>
+              </form>
+            )}
           </div>
         </div>
 

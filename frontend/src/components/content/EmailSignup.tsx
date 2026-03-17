@@ -29,21 +29,26 @@ export default function EmailSignup({
     setError("");
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, honeypot, source }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
-      } else {
+      // Honeypot check — if filled, silently "succeed" to fool bots
+      if (honeypot) {
         setSubmitted(true);
+        return;
       }
+
+      // Store subscription locally until a real backend (Mailchimp, ConvertKit,
+      // or Cloudflare Worker) is configured.
+      const stored = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
+      if (stored.includes(email)) {
+        setError("This email is already subscribed.");
+        setLoading(false);
+        return;
+      }
+      stored.push(email);
+      localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
+      localStorage.setItem("wristnerd-sub-source", source);
+      setSubmitted(true);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
