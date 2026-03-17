@@ -16,14 +16,28 @@ export default function ImageUploader({
   onUpload,
   onRemove,
 }: ImageUploaderProps) {
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFile = (file: File) => {
-    if (!file.type.startsWith("image/")) return;
+    setError(null);
+    if (!file.type.startsWith("image/")) {
+      setError("Please upload an image file (PNG, JPG, or WebP).");
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File size exceeds 5MB. Please choose a smaller image.");
+      return;
+    }
     const reader = new FileReader();
-    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.onload = (e) => {
+      const result = e.target?.result;
+      if (typeof result === "string") setPreview(result);
+    };
+    reader.onerror = () => setError("Failed to read the file. Please try again.");
     reader.readAsDataURL(file);
     onUpload?.(file);
   };
@@ -88,6 +102,9 @@ export default function ImageUploader({
           </p>
           <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP up to 5MB</p>
         </div>
+      )}
+      {error && (
+        <p className="text-xs text-red-600 mt-2">{error}</p>
       )}
       <input
         ref={inputRef}
