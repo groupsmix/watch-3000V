@@ -263,7 +263,7 @@ export default function QuizPage() {
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h3 className="text-sm font-semibold text-gray-900 mb-4">Top Recommended Products</h3>
             <div className="space-y-3">
-              {quizProducts.sort((a, b) => b.matchRate - a.matchRate).slice(0, 5).map((product, i) => (
+              {[...quizProducts].sort((a, b) => b.matchRate - a.matchRate).slice(0, 5).map((product, i) => (
                 <div key={product.id} className="flex items-center gap-3">
                   <span className="w-6 h-6 rounded-md bg-gray-100 text-xs font-bold text-gray-500 flex items-center justify-center">{i + 1}</span>
                   <span className="flex-1 text-sm text-gray-700">{product.name}</span>
