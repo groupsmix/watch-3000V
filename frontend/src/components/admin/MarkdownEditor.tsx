@@ -44,8 +44,17 @@ export default function MarkdownEditor({
     { icon: <Image className="w-4 h-4" />, action: () => insertMarkdown("![alt](", ")"), title: "Image" },
   ];
 
+  const escapeHtml = (str: string) =>
+    str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
   const renderPreview = (md: string) => {
-    const html = md
+    // Escape raw HTML first to prevent XSS, then apply markdown transformations
+    const html = escapeHtml(md)
       .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold text-navy mt-4 mb-2">$1</h3>')
       .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold text-navy mt-6 mb-3">$1</h2>')
       .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold text-navy mt-6 mb-3">$1</h1>')
