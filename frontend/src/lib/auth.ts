@@ -16,13 +16,24 @@ export interface JWTPayload {
   exp: number;
 }
 
-const JWT_SECRET_KEY =
-  process.env.NEXT_PUBLIC_JWT_SECRET || "wristnerd-admin-default-secret-change-me";
+const JWT_SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET;
+
+if (!JWT_SECRET_KEY && typeof window !== "undefined") {
+  console.error(
+    "[AUTH] NEXT_PUBLIC_JWT_SECRET is not set. Authentication will not work. " +
+    "Set this environment variable before deploying."
+  );
+}
 const AUTH_STORAGE_KEY = "wristnerd-auth-token";
 const TOKEN_COOKIE_NAME = "wristnerd-auth-token";
 const TOKEN_EXPIRY = "24h";
 
 function getSecretKey(): Uint8Array {
+  if (!JWT_SECRET_KEY) {
+    throw new Error(
+      "[AUTH] NEXT_PUBLIC_JWT_SECRET is not configured. Cannot sign or verify tokens."
+    );
+  }
   return new TextEncoder().encode(JWT_SECRET_KEY);
 }
 
@@ -114,12 +125,12 @@ function getUsers(): StoredUser[] {
     });
   }
 
-  // Fallback demo accounts when no env vars are set
-  if (users.length === 0) {
-    users.push(
-      { email: "admin@wristnerd.xyz", name: "Admin", password: "admin123", role: "admin" },
-      { email: "editor@wristnerd.xyz", name: "Editor", password: "editor123", role: "editor" },
-      { email: "viewer@wristnerd.xyz", name: "Viewer", password: "viewer123", role: "viewer" },
+  // No fallback demo accounts — env vars are required for all credentials.
+  // If no users are configured, authentication is effectively disabled.
+  if (users.length === 0 && typeof window !== "undefined") {
+    console.warn(
+      "[AUTH] No user credentials configured. Set NEXT_PUBLIC_ADMIN_EMAIL and " +
+      "NEXT_PUBLIC_ADMIN_PASSWORD environment variables to enable login."
     );
   }
 
@@ -130,15 +141,6 @@ export function validateCredentials(
   email: string,
   password: string
 ): AuthUser | null {
-  const masterPassword = process.env.NEXT_PUBLIC_ADMIN_MASTER_PASSWORD;
-  if (masterPassword && password === masterPassword) {
-    return {
-      email,
-      name: "Master Admin",
-      role: "admin",
-    };
-  }
-
   const users = getUsers();
   const user = users.find(
     (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
