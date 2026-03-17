@@ -33,10 +33,17 @@ export default function Footer() {
   const handleFooterSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!footerEmail) return;
-    const stored = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
-    if (!stored.includes(footerEmail)) {
-      stored.push(footerEmail);
-      localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
+    // Basic email format validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) return;
+    try {
+      const stored: string[] = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
+      if (!stored.includes(footerEmail)) {
+        stored.push(footerEmail);
+        localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
+      }
+    } catch {
+      // localStorage corrupted — reset it
+      localStorage.setItem("wristnerd-subscriptions", JSON.stringify([footerEmail]));
     }
     setFooterSubmitted(true);
   };
