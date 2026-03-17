@@ -52,6 +52,16 @@ export default function MarkdownEditor({
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
 
+  const isSafeUrl = (url: string): boolean => {
+    const decoded = url.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+    const trimmed = decoded.replace(/\s/g, "").toLowerCase();
+    return !(
+      trimmed.startsWith("javascript:") ||
+      trimmed.startsWith("data:") ||
+      trimmed.startsWith("vbscript:")
+    );
+  };
+
   const renderPreview = (md: string) => {
     // Escape raw HTML first to prevent XSS, then apply markdown transformations
     const html = escapeHtml(md)
@@ -62,7 +72,9 @@ export default function MarkdownEditor({
       .replace(/\*(.*?)\*/gim, "<em>$1</em>")
       .replace(/^\- (.*$)/gim, '<li class="ml-4 list-disc text-gray-600">$1</li>')
       .replace(/^\d+\. (.*$)/gim, '<li class="ml-4 list-decimal text-gray-600">$1</li>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" class="text-gold underline">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, (_match: string, text: string, url: string) =>
+        isSafeUrl(url) ? `<a href="${url}" class="text-gold underline">${text}</a>` : text
+      )
       .replace(/^---$/gim, '<hr class="my-4 border-gray-200" />')
       .replace(/\n\n/g, '</p><p class="text-gray-600 mb-3 leading-relaxed">')
       .replace(/\n/g, "<br />");
