@@ -107,7 +107,7 @@ export default function ComparisonsPage() {
                 <div className="fixed inset-0 z-10" onClick={() => setActiveMenu(null)} />
                 <div className="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-lg border border-gray-200 z-20 py-1">
                   <button onClick={() => { setEditModal(true); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Edit className="w-3.5 h-3.5" /> Edit</button>
-                  <Link href={`/compare/${item.slug}`} target="_blank" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Eye className="w-3.5 h-3.5" /> View Live</Link>
+                  <Link href={`/compare/${item.slug}`} target="_blank" rel="noopener noreferrer" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Eye className="w-3.5 h-3.5" /> View Live</Link>
                   <div className="border-t border-gray-100 my-1" />
                   <button onClick={() => { setDeleteConfirm(item); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><Trash2 className="w-3.5 h-3.5" /> Delete</button>
                 </div>
