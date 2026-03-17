@@ -72,6 +72,7 @@ function LoginForm() {
       router.refresh();
     } catch {
       setError("Login failed. Please try again.");
+    } finally {
       setLoading(false);
     }
   }

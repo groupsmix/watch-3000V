@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AlertTriangle } from "lucide-react";
 import Modal from "./Modal";
 import MarkdownEditor from "./MarkdownEditor";
@@ -52,7 +52,6 @@ export default function ContentFormModal({
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [content, setContent] = useState("");
-  const [slugConflict, setSlugConflict] = useState(false);
 
   useEffect(() => {
     if (mode === "edit" && item) {
@@ -76,20 +75,21 @@ export default function ContentFormModal({
       setMetaDescription("");
       setContent("");
     }
-    setSlugConflict(false);
   }, [mode, item, open]);
 
   useEffect(() => {
     if (autoSlug && title) {
       const generated = slugify(title);
       setSlug(generated);
-      setSlugConflict(existingSlugs.includes(generated));
     }
-  }, [title, autoSlug, existingSlugs]);
+  }, [title, autoSlug]);
 
-  useEffect(() => {
-    setSlugConflict(existingSlugs.includes(slug));
-  }, [slug, existingSlugs]);
+  // Derive slug conflict from current state — no effect needed
+  const slugConflict = useMemo(() => {
+    if (!slug) return false;
+    const isOwnSlug = mode === "edit" && item && slug === item.slug;
+    return !isOwnSlug && existingSlugs.includes(slug);
+  }, [slug, existingSlugs, mode, item]);
 
   const handleSave = () => {
     if (!title.trim()) return;

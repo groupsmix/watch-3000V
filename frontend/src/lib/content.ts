@@ -44,12 +44,15 @@ export function getContentBySlug(
 ): ContentPage | null {
   const files = getFilesFromDir(dir);
   for (const filePath of files) {
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    const { data, content } = matter(fileContents);
-    const fm = data as ContentFrontmatter;
     const fileSlug = path.basename(filePath, ".md");
-    if (fileSlug === slug) {
+    if (fileSlug !== slug) continue;
+    try {
+      const fileContents = fs.readFileSync(filePath, "utf8");
+      const { data, content } = matter(fileContents);
+      const fm = data as ContentFrontmatter;
       return { frontmatter: fm, content, slug: fileSlug };
+    } catch {
+      return null;
     }
   }
   return null;
@@ -57,15 +60,21 @@ export function getContentBySlug(
 
 export function getAllContentFromDir(dir: string): ContentPage[] {
   const files = getFilesFromDir(dir);
-  return files.map((filePath) => {
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    const { data, content } = matter(fileContents);
-    return {
-      frontmatter: data as ContentFrontmatter,
-      content,
-      slug: path.basename(filePath, ".md"),
-    };
-  });
+  const pages: ContentPage[] = [];
+  for (const filePath of files) {
+    try {
+      const fileContents = fs.readFileSync(filePath, "utf8");
+      const { data, content } = matter(fileContents);
+      pages.push({
+        frontmatter: data as ContentFrontmatter,
+        content,
+        slug: path.basename(filePath, ".md"),
+      });
+    } catch {
+      // Skip unreadable/corrupted files
+    }
+  }
+  return pages;
 }
 
 export function getAllSlugsFromDir(dir: string): string[] {
