@@ -152,6 +152,7 @@ export default function ReviewsPage() {
                   <Link
                     href={`/reviews/${item.slug}`}
                     target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setActiveMenu(null)}
                     className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >

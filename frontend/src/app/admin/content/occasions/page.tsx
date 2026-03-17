@@ -117,7 +117,7 @@ export default function OccasionsPage() {
                   <button onClick={() => { setEditModal(true); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     <Edit className="w-3.5 h-3.5" /> Edit
                   </button>
-                  <Link href={`/occasion/${item.slug}`} target="_blank" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <Link href={`/occasion/${item.slug}`} target="_blank" rel="noopener noreferrer" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     <Eye className="w-3.5 h-3.5" /> View Live
                   </Link>
                   <div className="border-t border-gray-100 my-1" />
