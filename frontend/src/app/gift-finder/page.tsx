@@ -17,6 +17,20 @@ interface WatchEntry {
   one_liner: string;
 }
 
+const affiliateLinks: Record<string, string> = {
+  "/reviews/seiko-presage-srpd37": "https://www.amazon.com/dp/B085BKTSSD?tag=wristnerd-20",
+  "/reviews/orient-bambino-v2": "https://www.amazon.com/dp/B01MTS5BPY?tag=wristnerd-20",
+  "/reviews/tissot-prx-powermatic-80": "https://www.amazon.com/dp/B09BFJM1TZ?tag=wristnerd-20",
+  "/reviews/hamilton-khaki-field-mechanical": "https://www.amazon.com/dp/B07PL145R1?tag=wristnerd-20",
+  "/reviews/citizen-eco-drive-bm8180": "https://www.amazon.com/dp/B000EQS1JW?tag=wristnerd-20",
+  "/reviews/seiko-5-srpd55": "https://www.amazon.com/dp/B07WGN2YRW?tag=wristnerd-20",
+  "/reviews/casio-g-shock-ga2100": "https://www.amazon.com/dp/B07WDKJ97R?tag=wristnerd-20",
+  "/reviews/bulova-lunar-pilot": "https://www.amazon.com/dp/B01AJE27SM?tag=wristnerd-20",
+  "/reviews/timex-marlin-automatic": "https://www.amazon.com/dp/B0C1KLCLQ1?tag=wristnerd-20",
+  "/reviews/tissot-gentleman-powermatic-80": "https://www.amazon.com/dp/B07Z7D78MK?tag=wristnerd-20",
+  "/reviews/fossil-neutra-chronograph": "https://www.amazon.com/dp/B07B8X8TQC?tag=wristnerd-20",
+};
+
 const watchDatabase: WatchEntry[] = [
   {
     name: "Seiko Presage SRPD37",
@@ -147,19 +161,6 @@ const watchDatabase: WatchEntry[] = [
     recipients: ["husband", "dad", "self"],
     gift_worthiness_score: 9.4,
     one_liner: "Swiss automatic with sapphire crystal and finishing that rivals $2,000 watches.",
-  },
-  {
-    name: "Citizen Eco-Drive Chandler",
-    slug: "/reviews/citizen-eco-drive-bm8180",
-    price_range: "$100–$140",
-    price_min: 100,
-    price_max: 140,
-    movement: "solar",
-    style: ["casual", "rugged"],
-    occasions: ["christmas", "fathers_day", "birthday", "other"],
-    recipients: ["dad", "friend", "self"],
-    gift_worthiness_score: 7.9,
-    one_liner: "Solar-powered field watch — zero maintenance, 100m WR, reliable daily wearer.",
   },
   {
     name: "Fossil Neutra Chronograph",
@@ -356,7 +357,7 @@ export default function GiftFinderPage() {
                   <p className="text-gray-600 mb-5 leading-relaxed font-light">{watch.one_liner}</p>
                   <div className="flex flex-wrap gap-3">
                     <a
-                      href="#"
+                      href={affiliateLinks[watch.slug] || watch.slug}
                       rel="nofollow sponsored noopener"
                       target="_blank"
                       className="inline-flex items-center gap-2 px-6 py-3 cta-shine text-white font-semibold rounded-full text-sm min-h-[48px] hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] transition-all duration-500"
