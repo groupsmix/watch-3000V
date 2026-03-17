@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getStoredToken, verifyToken, removeToken } from "@/lib/auth";
 
 export type UserRole = "admin" | "editor" | "viewer";
 
@@ -33,21 +32,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const token = getStoredToken();
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-      const payload = await verifyToken(token);
-      if (payload) {
-        setUser({ email: payload.email, name: payload.name, role: payload.role });
+      const res = await fetch("/api/auth/me");
+      const data = await res.json();
+      if (data.user) {
+        setUser({
+          email: data.user.email,
+          name: data.user.name,
+          role: data.user.role,
+        });
       } else {
-        removeToken();
         setUser(null);
       }
     } catch {
-      removeToken();
       setUser(null);
     } finally {
       setLoading(false);
@@ -59,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshUser]);
 
   const logout = useCallback(async () => {
-    removeToken();
+    await fetch("/api/auth/logout", { method: "POST" });
     setUser(null);
     router.push("/login");
     router.refresh();
