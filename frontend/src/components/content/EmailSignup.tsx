@@ -59,7 +59,7 @@ export default function EmailSignup({
       <form onSubmit={handleSubmit} className="flex gap-2 max-w-md">
         {submitted ? (
           <p className="text-green-600 font-medium text-sm py-2">
-            You&apos;re in! Check your inbox for a welcome email.
+            You&apos;re subscribed! We&apos;ll notify you when alerts go live.
           </p>
         ) : (
           <>
@@ -117,7 +117,7 @@ export default function EmailSignup({
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            You&apos;re in! Check your inbox for a welcome email.
+            You&apos;re subscribed! We&apos;ll notify you when alerts go live.
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg">

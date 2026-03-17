@@ -32,7 +32,6 @@ interface AffiliateLink {
   revenue: number;
   status: string;
   lastChecked: string;
-  [key: string]: unknown;
 }
 
 const affiliateData: AffiliateLink[] = [

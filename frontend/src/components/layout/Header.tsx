@@ -68,6 +68,18 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [megaMenuOpen]);
 
+  // Close menus on Escape key
+  useEffect(() => {
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMegaMenuOpen(false);
+        setMobileOpen(false);
+      }
+    }
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const closeMegaMenu = useCallback(() => setMegaMenuOpen(false), []);
 
   return (
@@ -115,6 +127,7 @@ export default function Header() {
             <button
               ref={megaButtonRef}
               onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+              aria-expanded={megaMenuOpen}
               className={`flex items-center gap-1.5 px-4 py-2 text-[0.6875rem] font-semibold tracking-[0.14em] uppercase transition-all duration-300 rounded-full ${
                 megaMenuOpen
                   ? "text-gold bg-gold/5"
@@ -164,6 +177,7 @@ export default function Header() {
             onClick={() => setMobileOpen(!mobileOpen)}
             className="lg:hidden p-2 text-gray-600 hover:text-navy rounded-xl hover:bg-pearl transition-all duration-300"
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
             <div className="w-6 h-5 flex flex-col justify-between relative">
               <span className={`w-6 h-[1.5px] bg-current rounded-full transition-all duration-300 origin-center ${mobileOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
