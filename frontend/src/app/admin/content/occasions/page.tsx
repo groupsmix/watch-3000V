@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, Gift, MoreVertical } from "lucide-react";
 import AdminBreadcrumb from "@/components/admin/AdminBreadcrumb";
 import DataTable from "@/components/admin/DataTable";
@@ -15,7 +16,6 @@ interface OccasionItem {
   watchCount: number;
   status: string;
   lastUpdated: string;
-  [key: string]: unknown;
 }
 
 const occasionsData: OccasionItem[] = [
@@ -32,6 +32,15 @@ export default function OccasionsPage() {
   const [editModal, setEditModal] = useState(false);
   const [editContent, setEditContent] = useState("# Father's Day Gift Watches\n\nFind the perfect watch for Dad...");
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
+
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") setActiveMenu(null);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
 
   const columns = [
     {
@@ -108,9 +117,9 @@ export default function OccasionsPage() {
                   <button onClick={() => { setEditModal(true); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     <Edit className="w-3.5 h-3.5" /> Edit
                   </button>
-                  <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                  <Link href={`/occasion/${item.slug}`} target="_blank" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
                     <Eye className="w-3.5 h-3.5" /> View Live
-                  </button>
+                  </Link>
                   <div className="border-t border-gray-100 my-1" />
                   <button onClick={() => { setDeleteConfirm(item); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50">
                     <Trash2 className="w-3.5 h-3.5" /> Delete

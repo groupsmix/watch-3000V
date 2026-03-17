@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, PenSquare, MoreVertical } from "lucide-react";
 import AdminBreadcrumb from "@/components/admin/AdminBreadcrumb";
 import DataTable from "@/components/admin/DataTable";
@@ -16,7 +17,6 @@ interface BlogItem {
   wordCount: number;
   status: string;
   lastUpdated: string;
-  [key: string]: unknown;
 }
 
 const blogData: BlogItem[] = [
@@ -37,6 +37,15 @@ export default function BlogPage() {
   const [editModal, setEditModal] = useState(false);
   const [editContent, setEditContent] = useState("# Blog Post Title\n\nYour content here...");
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
+
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") setActiveMenu(null);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
 
   const columns = [
     {
@@ -106,7 +115,7 @@ export default function BlogPage() {
                 <div className="fixed inset-0 z-10" onClick={() => setActiveMenu(null)} />
                 <div className="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-lg border border-gray-200 z-20 py-1">
                   <button onClick={() => { setEditModal(true); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Edit className="w-3.5 h-3.5" /> Edit</button>
-                  <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Eye className="w-3.5 h-3.5" /> View Live</button>
+                  <Link href={`/blog/${item.slug}`} target="_blank" onClick={() => setActiveMenu(null)} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"><Eye className="w-3.5 h-3.5" /> View Live</Link>
                   <div className="border-t border-gray-100 my-1" />
                   <button onClick={() => { setDeleteConfirm(item); setActiveMenu(null); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"><Trash2 className="w-3.5 h-3.5" /> Delete</button>
                 </div>
