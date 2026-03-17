@@ -22,7 +22,7 @@ export function getMetadataFromPage(page: ContentPage): Metadata {
       images: fm.og_image ? [fm.og_image] : undefined,
     },
     twitter: {
-      card: (fm.twitter_card as "summary_large_image" | "summary") || "summary_large_image",
+      card: fm.twitter_card === "summary" ? "summary" : "summary_large_image",
     },
     alternates: fm.canonical ? { canonical: fm.canonical } : undefined,
   };

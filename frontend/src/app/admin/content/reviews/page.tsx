@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, Star, MoreVertical } from "lucide-react";
 import AdminBreadcrumb from "@/components/admin/AdminBreadcrumb";
@@ -19,7 +19,6 @@ interface ReviewItem {
   status: string;
   lastUpdated: string;
   author: string;
-  [key: string]: unknown;
 }
 
 const reviewsData: ReviewItem[] = [
@@ -44,6 +43,17 @@ export default function ReviewsPage() {
   const [editModal, setEditModal] = useState(false);
   const [editContent, setEditContent] = useState("# Sample Review\n\nThis is a **markdown** preview for the review editor.\n\n## Quick Specs\n\n| Spec | Detail |\n|------|--------|\n| Movement | Automatic |\n| Case Size | 40mm |\n\n## Gift-Worthiness Score: 9.2/10\n\nThis watch excels in every category...");
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
+
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setActiveMenu(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
 
   const columns = [
     {
