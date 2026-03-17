@@ -140,7 +140,7 @@ export default function Footer() {
             </div>
             {footerSubmitted ? (
               <p className="text-emerald-400 font-medium text-sm py-3">
-                You&apos;re in! We&apos;ll send you the best deals.
+                Saved! We&apos;ll notify you when gift alerts go live.
               </p>
             ) : (
               <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleFooterSubscribe}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Bell,
   Search,
@@ -12,6 +12,23 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+const SEARCH_ITEMS = [
+  { label: "Dashboard", href: "/admin" },
+  { label: "Reviews", href: "/admin/content/reviews" },
+  { label: "Occasions", href: "/admin/content/occasions" },
+  { label: "Budgets", href: "/admin/content/budgets" },
+  { label: "Recipients", href: "/admin/content/recipients" },
+  { label: "Blog Posts", href: "/admin/content/blog" },
+  { label: "Brands", href: "/admin/content/brands" },
+  { label: "Comparisons", href: "/admin/content/comparisons" },
+  { label: "Scheduled Content", href: "/admin/scheduled-content" },
+  { label: "Affiliates", href: "/admin/affiliates" },
+  { label: "Quiz Management", href: "/admin/quiz" },
+  { label: "Analytics", href: "/admin/analytics" },
+  { label: "Users", href: "/admin/users" },
+];
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Admin",
@@ -24,6 +41,17 @@ export default function AdminTopNav() {
   const router = useRouter();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    return SEARCH_ITEMS.filter((item) =>
+      item.label.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
+
+  const showSearchDropdown = searchFocused && searchQuery.trim().length > 0;
 
   const [notifications, setNotifications] = useState([
     { id: 1, text: "New review draft saved: Tissot PRX", time: "2 min ago", unread: true },
@@ -37,6 +65,19 @@ export default function AdminTopNav() {
     setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
   };
 
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setShowNotifications(false);
+      setShowProfileMenu(false);
+      setSearchFocused(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
+
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
       <div className="flex items-center justify-between h-16 px-4 lg:px-8">
@@ -46,9 +87,31 @@ export default function AdminTopNav() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
               placeholder="Search content, products, links..."
               className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold/50 transition-all"
             />
+            {showSearchDropdown && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
+                {searchResults.length > 0 ? (
+                  searchResults.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => { setSearchQuery(""); setSearchFocused(false); }}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))
+                ) : (
+                  <p className="px-4 py-3 text-sm text-gray-400">No results found</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

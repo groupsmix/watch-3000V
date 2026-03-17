@@ -85,8 +85,41 @@ const revenueByNetwork = [
   { network: "CJ", revenue: 144, pct: 6 },
 ];
 
+function downloadCSV(filename: string, headers: string[], rows: string[][]) {
+  const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState("30d");
+  const [showAllPages, setShowAllPages] = useState(false);
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState("");
+
+  const handleExportAnalytics = () => {
+    downloadCSV(
+      `analytics-${dateRange}.csv`,
+      ["Date", "Views", "Clicks"],
+      pageViewsData.map((d) => [d.date, String(d.views), String(d.clicks)])
+    );
+  };
+
+  const handleExportProductClicks = () => {
+    downloadCSV(
+      "product-clicks.csv",
+      ["Product", "Clicks", "Conversions", "Conv. Rate", "Revenue"],
+      productClicks.map((p) => [p.product, String(p.clicks), String(p.conversions), p.rate, `$${p.revenue}`])
+    );
+  };
+
+  const displayedPages = showAllPages ? topPages : topPages.slice(0, 8);
 
   return (
     <div>
@@ -116,10 +149,41 @@ export default function AnalyticsPage() {
               </button>
             ))}
           </div>
-          <button className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50">
-            <Calendar className="w-4 h-4" /> Custom
-          </button>
-          <button className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50">
+          <div className="relative">
+            <button
+              onClick={() => setShowCustomPicker(!showCustomPicker)}
+              className={`inline-flex items-center gap-2 px-3 py-2 bg-white border text-sm rounded-lg hover:bg-gray-50 ${
+                showCustomPicker ? "border-gold/50 text-gold-dark" : "border-gray-200 text-gray-600"
+              }`}
+            >
+              <Calendar className="w-4 h-4" /> Custom
+            </button>
+            {showCustomPicker && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowCustomPicker(false)} />
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 z-20 p-4 space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">From</label>
+                    <input type="date" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)} className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">To</label>
+                    <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)} className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
+                  </div>
+                  <button
+                    onClick={() => { setDateRange("custom"); setShowCustomPicker(false); }}
+                    className="w-full px-3 py-1.5 bg-navy text-white text-sm font-medium rounded-lg hover:bg-navy-light transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+          <button
+            onClick={handleExportAnalytics}
+            className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50"
+          >
             <Download className="w-4 h-4" /> Export
           </button>
         </div>
@@ -224,7 +288,9 @@ export default function AnalyticsPage() {
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-gray-900">Top Pages</h2>
-            <button className="text-xs text-gold hover:text-gold-dark font-medium">View All</button>
+            <button onClick={() => setShowAllPages(!showAllPages)} className="text-xs text-gold hover:text-gold-dark font-medium">
+              {showAllPages ? "Show Less" : "View All"}
+            </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -236,7 +302,7 @@ export default function AnalyticsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {topPages.slice(0, 8).map((page) => (
+                {displayedPages.map((page) => (
                   <tr key={page.page} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
                       <p className="text-sm font-medium text-gray-900 truncate max-w-xs">{page.title}</p>
@@ -263,7 +329,10 @@ export default function AnalyticsPage() {
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-900">Product Click Performance</h2>
-          <button className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-800 font-medium bg-gray-100 px-3 py-1.5 rounded-lg">
+          <button
+            onClick={handleExportProductClicks}
+            className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-800 font-medium bg-gray-100 px-3 py-1.5 rounded-lg"
+          >
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
         </div>

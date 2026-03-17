@@ -13,7 +13,6 @@ interface CalendarItem {
   status: ContentStatus;
   scheduledAt: string | null;
   author: string;
-  [key: string]: unknown;
 }
 
 interface CalendarViewProps<T extends CalendarItem = CalendarItem> {
