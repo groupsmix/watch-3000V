@@ -13,6 +13,7 @@ export default function EmailSignup({
   variant = "card",
   heading = "Get Gift Alerts & Price Drops",
   description = "Join 5,000+ smart gift-givers. We'll send seasonal picks, price drop alerts, and exclusive deals — never spam.",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- will be used once subscription endpoint is implemented
   source = "website",
 }: EmailSignupProps) {
   const [email, setEmail] = useState("");
@@ -29,21 +30,25 @@ export default function EmailSignup({
     setError("");
 
     try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, honeypot, source }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Something went wrong. Please try again.");
-      } else {
+      // Honeypot check — if filled, silently "succeed" to fool bots
+      if (honeypot) {
         setSubmitted(true);
+        return;
       }
+
+      // Basic client-side email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+
+      // TODO: Replace with your actual subscription endpoint
+      // (e.g., Cloudflare Worker, Mailchimp, ConvertKit, etc.)
+      // For now, show a success message since /api/subscribe does not exist in a static export.
+      setSubmitted(true);
     } catch {
-      setError("Network error. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

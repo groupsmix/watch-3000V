@@ -6,6 +6,7 @@ import Link from "next/link";
 interface WatchEntry {
   name: string;
   slug: string;
+  affiliate_url: string;
   price_range: string;
   price_min: number;
   price_max: number;
@@ -21,6 +22,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Seiko Presage SRPD37",
     slug: "/reviews/seiko-presage-srpd37",
+    affiliate_url: "https://www.amazon.com/dp/B07YZ4SGMR?tag=wristnerd-20",
     price_range: "$280–$320",
     price_min: 280,
     price_max: 320,
@@ -34,6 +36,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Orient Bambino V2",
     slug: "/reviews/orient-bambino-v2",
+    affiliate_url: "https://www.amazon.com/dp/B01MUDI3GN?tag=wristnerd-20",
     price_range: "$130–$170",
     price_min: 130,
     price_max: 170,
@@ -47,6 +50,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Tissot PRX Powermatic 80",
     slug: "/reviews/tissot-prx-powermatic-80",
+    affiliate_url: "https://www.amazon.com/dp/B09MDNMMRW?tag=wristnerd-20",
     price_range: "$450–$500",
     price_min: 450,
     price_max: 500,
@@ -60,6 +64,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Hamilton Khaki Field Mechanical",
     slug: "/reviews/hamilton-khaki-field-mechanical",
+    affiliate_url: "https://www.amazon.com/dp/B001FSJBD0?tag=wristnerd-20",
     price_range: "$400–$500",
     price_min: 400,
     price_max: 500,
@@ -73,6 +78,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Citizen Eco-Drive BM8180",
     slug: "/reviews/citizen-eco-drive-bm8180",
+    affiliate_url: "https://www.amazon.com/dp/B000EQS1JW?tag=wristnerd-20",
     price_range: "$75–$100",
     price_min: 75,
     price_max: 100,
@@ -86,6 +92,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Seiko 5 Sports SRPD55",
     slug: "/reviews/seiko-5-srpd55",
+    affiliate_url: "https://www.amazon.com/dp/B07WGMQBPF?tag=wristnerd-20",
     price_range: "$220–$270",
     price_min: 220,
     price_max: 270,
@@ -99,6 +106,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Casio G-Shock GA2100",
     slug: "/reviews/casio-g-shock-ga2100",
+    affiliate_url: "https://www.amazon.com/dp/B07WMS77R4?tag=wristnerd-20",
     price_range: "$80–$110",
     price_min: 80,
     price_max: 110,
@@ -112,6 +120,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Bulova Lunar Pilot",
     slug: "/reviews/bulova-lunar-pilot",
+    affiliate_url: "https://www.amazon.com/dp/B01AJE2WAW?tag=wristnerd-20",
     price_range: "$350–$450",
     price_min: 350,
     price_max: 450,
@@ -125,6 +134,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Timex Marlin Automatic",
     slug: "/reviews/timex-marlin-automatic",
+    affiliate_url: "https://www.amazon.com/dp/B07VYG3TCK?tag=wristnerd-20",
     price_range: "$200–$250",
     price_min: 200,
     price_max: 250,
@@ -138,6 +148,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Tissot Gentleman Powermatic 80",
     slug: "/reviews/tissot-gentleman-powermatic-80",
+    affiliate_url: "https://www.amazon.com/dp/B07Z4J5MHN?tag=wristnerd-20",
     price_range: "$600–$700",
     price_min: 600,
     price_max: 700,
@@ -150,7 +161,8 @@ const watchDatabase: WatchEntry[] = [
   },
   {
     name: "Citizen Eco-Drive Chandler",
-    slug: "/reviews/citizen-eco-drive-bm8180",
+    slug: "/reviews/citizen-eco-drive-chandler",
+    affiliate_url: "https://www.amazon.com/dp/B004JKBDYO?tag=wristnerd-20",
     price_range: "$100–$140",
     price_min: 100,
     price_max: 140,
@@ -164,6 +176,7 @@ const watchDatabase: WatchEntry[] = [
   {
     name: "Fossil Neutra Chronograph",
     slug: "/reviews/fossil-neutra-chronograph",
+    affiliate_url: "https://www.amazon.com/dp/B079RM1WJM?tag=wristnerd-20",
     price_range: "$80–$120",
     price_min: 80,
     price_max: 120,
@@ -356,7 +369,7 @@ export default function GiftFinderPage() {
                   <p className="text-gray-600 mb-5 leading-relaxed font-light">{watch.one_liner}</p>
                   <div className="flex flex-wrap gap-3">
                     <a
-                      href="#"
+                      href={watch.affiliate_url}
                       rel="nofollow sponsored noopener"
                       target="_blank"
                       className="inline-flex items-center gap-2 px-6 py-3 cta-shine text-white font-semibold rounded-full text-sm min-h-[48px] hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] transition-all duration-500"
