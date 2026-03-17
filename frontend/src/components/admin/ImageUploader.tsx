@@ -20,8 +20,14 @@ export default function ImageUploader({
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) return;
+    if (file.size > MAX_FILE_SIZE) {
+      alert("File is too large. Maximum size is 5MB.");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
     reader.readAsDataURL(file);

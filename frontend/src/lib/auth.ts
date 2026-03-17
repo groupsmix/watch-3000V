@@ -25,7 +25,6 @@ if (!JWT_SECRET_KEY && typeof window !== "undefined") {
   );
 }
 const AUTH_STORAGE_KEY = "wristnerd-auth-token";
-const TOKEN_COOKIE_NAME = "wristnerd-auth-token";
 const TOKEN_EXPIRY = "24h";
 
 function getSecretKey(): Uint8Array {
@@ -199,8 +198,4 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
 
 export function hasPermission(role: UserRole, permission: string): boolean {
   return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
-}
-
-export function getTokenCookieName(): string {
-  return TOKEN_COOKIE_NAME;
 }

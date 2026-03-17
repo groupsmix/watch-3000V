@@ -12,7 +12,7 @@ interface ScheduleModalProps {
   onSchedule: (dateIso: string) => void;
 }
 
-export default function ScheduleModal({
+function ScheduleModalInner({
   open,
   onClose,
   item,
@@ -33,7 +33,7 @@ export default function ScheduleModal({
       return;
     }
     const selected = new Date(dateValue);
-    if (selected <= now) {
+    if (selected <= new Date()) {
       setError("Scheduled date must be in the future.");
       return;
     }
@@ -112,4 +112,13 @@ export default function ScheduleModal({
       </div>
     </Modal>
   );
+}
+
+// Wrapper that remounts the inner component when `open` or `item` changes,
+// so that useState re-initialises with the correct default date.
+export default function ScheduleModal(props: ScheduleModalProps) {
+  const key = props.open
+    ? `open-${props.item?.title ?? "bulk"}-${props.item?.scheduledAt ?? ""}`
+    : "closed";
+  return <ScheduleModalInner key={key} {...props} />;
 }

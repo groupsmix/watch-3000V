@@ -42,7 +42,7 @@ export default async function ComparisonPage({ params }: PageProps) {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb
             items={[
-              { label: "Comparisons", href: "/" },
+              { label: "Comparisons", href: "/reviews" },
               { label: page.frontmatter.title },
             ]}
           />
