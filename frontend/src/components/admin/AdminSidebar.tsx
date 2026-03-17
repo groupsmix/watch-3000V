@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -82,6 +82,16 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const [expandedSections, setExpandedSections] = useState<string[]>(["Content"]);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   const toggleSection = (label: string) => {
     setExpandedSections((prev) =>

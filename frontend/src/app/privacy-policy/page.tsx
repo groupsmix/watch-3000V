@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getStaticPage } from "@/lib/content";
 import { renderContent, getSchemaFromPage, getMetadataFromPage } from "@/lib/contentRenderer";
 import Breadcrumb from "@/components/layout/Breadcrumb";
@@ -12,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PrivacyPolicyPage() {
   const page = getStaticPage("privacy-policy");
-  if (!page) return <div className="max-w-3xl mx-auto px-4 py-8"><p>Page not found.</p></div>;
+  if (!page) notFound();
 
   const htmlContent = await renderContent(page);
   const schema = getSchemaFromPage(page);
