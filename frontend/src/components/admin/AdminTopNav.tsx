@@ -11,6 +11,7 @@ import {
   Shield,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Admin",
@@ -20,16 +21,21 @@ const ROLE_LABELS: Record<string, string> = {
 
 export default function AdminTopNav() {
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const notifications = [
+  const [notifications, setNotifications] = useState([
     { id: 1, text: "New review draft saved: Tissot PRX", time: "2 min ago", unread: true },
     { id: 2, text: "Affiliate link expired: Orient Bambino", time: "1 hour ago", unread: true },
     { id: 3, text: "Quiz completed 24 times today", time: "3 hours ago", unread: false },
-  ];
+  ]);
 
   const unreadCount = notifications.filter((n) => n.unread).length;
+
+  const markAllRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+  };
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
@@ -71,7 +77,7 @@ export default function AdminTopNav() {
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
                   <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
                     <span className="font-semibold text-sm text-gray-900">Notifications</span>
-                    <button className="text-xs text-gold hover:text-gold-dark font-medium">Mark all read</button>
+                    <button onClick={markAllRead} className="text-xs text-gold hover:text-gold-dark font-medium">Mark all read</button>
                   </div>
                   <div className="max-h-72 overflow-y-auto">
                     {notifications.map((notif) => (
@@ -117,11 +123,17 @@ export default function AdminTopNav() {
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setShowProfileMenu(false)} />
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden py-1">
-                  <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                  <button
+                    onClick={() => { setShowProfileMenu(false); router.push("/admin"); }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                  >
                     <User className="w-4 h-4" />
                     Profile
                   </button>
-                  <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                  <button
+                    onClick={() => { setShowProfileMenu(false); router.push("/admin"); }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50"
+                  >
                     <Settings className="w-4 h-4" />
                     Settings
                   </button>
