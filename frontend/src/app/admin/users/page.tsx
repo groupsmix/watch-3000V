@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Plus,
   Edit,
@@ -52,6 +52,36 @@ export default function UsersPage() {
   const [editModal, setEditModal] = useState(false);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"users" | "permissions">("users");
+  const [inviteName, setInviteName] = useState("");
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState("Editor");
+  const [inviteStatus, setInviteStatus] = useState<"idle" | "sending" | "sent">("idle");
+
+  const handleSendInvite = () => {
+    if (!inviteName || !inviteEmail) return;
+    setInviteStatus("sending");
+    setTimeout(() => {
+      setInviteStatus("sent");
+      setTimeout(() => {
+        setEditModal(false);
+        setInviteName("");
+        setInviteEmail("");
+        setInviteRole("Editor");
+        setInviteStatus("idle");
+      }, 1500);
+    }, 500);
+  };
+
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setActiveMenu(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
 
   const roleStyles = {
     Admin: { bg: "bg-navy", text: "text-white", icon: <ShieldCheck className="w-3 h-3" /> },
@@ -232,20 +262,35 @@ export default function UsersPage() {
       )}
 
       {/* Edit/Invite Modal */}
-      <Modal open={editModal} onClose={() => setEditModal(false)} title="Invite User" size="md"
+      <Modal open={editModal} onClose={() => { setEditModal(false); setInviteStatus("idle"); }} title="Invite User" size="md"
         footer={<>
-          <button onClick={() => setEditModal(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
-          <button onClick={() => setEditModal(false)} className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gold-dark to-gold rounded-lg hover:shadow-lg transition-all">Send Invite</button>
+          <button onClick={() => { setEditModal(false); setInviteStatus("idle"); }} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button>
+          <button
+            onClick={handleSendInvite}
+            disabled={inviteStatus !== "idle" || !inviteName || !inviteEmail}
+            className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gold-dark to-gold rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+          >
+            {inviteStatus === "sending" ? "Sending..." : inviteStatus === "sent" ? "Invite Sent!" : "Send Invite"}
+          </button>
         </>}
       >
+        {inviteStatus === "sent" ? (
+          <div className="py-6 text-center">
+            <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+              <Mail className="w-6 h-6 text-emerald-600" />
+            </div>
+            <p className="text-sm font-medium text-gray-900">Invite sent to {inviteEmail}</p>
+            <p className="text-xs text-gray-500 mt-1">They&apos;ll receive an email with login instructions.</p>
+          </div>
+        ) : (
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
-            <input type="text" placeholder="John Doe" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
+            <input type="text" value={inviteName} onChange={(e) => setInviteName(e.target.value)} placeholder="John Doe" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
-            <input type="email" placeholder="john@wristnerd.xyz" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
+            <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="john@wristnerd.xyz" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold/30" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Role</label>
@@ -256,7 +301,7 @@ export default function UsersPage() {
                 { role: "Viewer", desc: "View-only access to content and analytics" },
               ].map((item) => (
                 <label key={item.role} className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
-                  <input type="radio" name="role" className="mt-0.5 accent-gold" defaultChecked={item.role === "Editor"} />
+                  <input type="radio" name="role" className="mt-0.5 accent-gold" checked={inviteRole === item.role} onChange={() => setInviteRole(item.role)} />
                   <div>
                     <p className="text-sm font-medium text-gray-900">{item.role}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
@@ -266,6 +311,7 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
+        )}
       </Modal>
 
       <ConfirmDialog open={!!deleteConfirm} onClose={() => setDeleteConfirm(null)} onConfirm={() => setDeleteConfirm(null)}

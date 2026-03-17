@@ -23,7 +23,8 @@ interface DataTableProps<T> {
   filterComponent?: React.ReactNode;
 }
 
-export default function DataTable<T extends Record<string, unknown>>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function DataTable<T extends Record<string, any>>({
   columns,
   data,
   searchPlaceholder = "Search...",

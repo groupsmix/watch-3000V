@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Plus,
   Edit,
@@ -57,6 +57,32 @@ export default function AffiliatesPage() {
   const [search, setSearch] = useState("");
   const [filterNetwork, setFilterNetwork] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
+
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setActiveMenu(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleEscape]);
+
+  const handleExportCSV = () => {
+    const headers = ["Product", "Placeholder", "URL", "Network", "Clicks", "Conversions", "Revenue", "Status", "Last Checked"];
+    const rows = filtered.map((a) =>
+      [a.product, a.placeholder, a.url, a.network, String(a.clicks), String(a.conversions), `$${a.revenue}`, a.status, a.lastChecked].join(",")
+    );
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "affiliate-links.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   const filtered = affiliateData.filter((item) => {
     const matchesSearch = !search || item.product.toLowerCase().includes(search.toLowerCase()) || item.placeholder.toLowerCase().includes(search.toLowerCase());
@@ -137,7 +163,10 @@ export default function AffiliatesPage() {
           <option value="Expiring">Expiring</option>
           <option value="Unmapped">Unmapped</option>
         </select>
-        <button className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50">
+        <button
+          onClick={handleExportCSV}
+          className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50"
+        >
           <Download className="w-4 h-4" /> Export
         </button>
       </div>

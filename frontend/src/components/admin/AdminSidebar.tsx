@@ -209,6 +209,8 @@ export default function AdminSidebar() {
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
+        aria-expanded={mobileOpen}
+        aria-label={mobileOpen ? "Close sidebar" : "Open sidebar"}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-navy text-white shadow-lg"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

@@ -109,6 +109,22 @@ export default function QuizPage() {
   const [editProductModal, setEditProductModal] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<QuizQuestion | null>(null);
   const [activeTab, setActiveTab] = useState<"questions" | "products" | "stats">("questions");
+  const [products, setProducts] = useState<QuizProduct[]>(quizProducts);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+
+  const toggleProduct = (id: number) => {
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, enabled: !p.enabled } : p))
+    );
+  };
+
+  const handleSaveChanges = () => {
+    setSaveStatus("saving");
+    setTimeout(() => {
+      setSaveStatus("saved");
+      setTimeout(() => setSaveStatus("idle"), 2000);
+    }, 500);
+  };
 
   return (
     <div>
@@ -119,9 +135,13 @@ export default function QuizPage() {
           <h1 className="text-2xl font-bold text-navy font-heading">Gift Finder Quiz</h1>
           <p className="text-sm text-gray-500 mt-1">Manage quiz questions, product matching, and view usage stats</p>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gold-dark to-gold text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-gold/25 transition-all">
+        <button
+          onClick={handleSaveChanges}
+          disabled={saveStatus === "saving"}
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gold-dark to-gold text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-gold/25 transition-all disabled:opacity-50"
+        >
           <Save className="w-4 h-4" />
-          Save Changes
+          {saveStatus === "saving" ? "Saving..." : saveStatus === "saved" ? "Saved!" : "Save Changes"}
         </button>
       </div>
 
@@ -206,7 +226,7 @@ export default function QuizPage() {
       {activeTab === "products" && (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
-            <span className="text-sm font-semibold text-gray-900">{quizProducts.filter(p => p.enabled).length} products in matching pool</span>
+            <span className="text-sm font-semibold text-gray-900">{products.filter(p => p.enabled).length} products in matching pool</span>
             <button onClick={() => setEditProductModal(true)} className="text-sm text-gold hover:text-gold-dark font-medium flex items-center gap-1">
               <Plus className="w-3.5 h-3.5" /> Add Product
             </button>
@@ -222,7 +242,7 @@ export default function QuizPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {quizProducts.map((product) => (
+              {products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3.5">
                     <span className="text-sm font-medium text-gray-900">{product.name}</span>
@@ -241,7 +261,11 @@ export default function QuizPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3.5">
-                    <button className={`w-10 h-5 rounded-full transition-colors relative ${product.enabled ? "bg-emerald-500" : "bg-gray-200"}`}>
+                    <button
+                      onClick={() => toggleProduct(product.id)}
+                      aria-label={product.enabled ? `Disable ${product.name}` : `Enable ${product.name}`}
+                      className={`w-10 h-5 rounded-full transition-colors relative ${product.enabled ? "bg-emerald-500" : "bg-gray-200"}`}
+                    >
                       <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${product.enabled ? "left-5" : "left-0.5"}`} />
                     </button>
                   </td>

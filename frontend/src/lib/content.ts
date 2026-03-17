@@ -4,6 +4,27 @@ import matter from "gray-matter";
 
 const contentDirectory = path.join(process.cwd(), "..", "content");
 
+function parseContentFrontmatter(data: Record<string, unknown>): ContentFrontmatter {
+  return {
+    title: typeof data.title === "string" ? data.title : "",
+    slug: typeof data.slug === "string" ? data.slug : "",
+    template: typeof data.template === "string" ? data.template : "",
+    meta_title: typeof data.meta_title === "string" ? data.meta_title : "",
+    meta_description: typeof data.meta_description === "string" ? data.meta_description : "",
+    schema_types: Array.isArray(data.schema_types) ? data.schema_types.filter((s): s is string => typeof s === "string") : [],
+    og_title: typeof data.og_title === "string" ? data.og_title : undefined,
+    og_description: typeof data.og_description === "string" ? data.og_description : undefined,
+    og_image: typeof data.og_image === "string" ? data.og_image : undefined,
+    twitter_card: typeof data.twitter_card === "string" ? data.twitter_card : undefined,
+    canonical: typeof data.canonical === "string" ? data.canonical : undefined,
+    word_count_target: typeof data.word_count_target === "string" ? data.word_count_target : undefined,
+    last_updated: typeof data.last_updated === "string" ? data.last_updated : undefined,
+    author: typeof data.author === "string" ? data.author : undefined,
+    pinterest_pin_ideas: Array.isArray(data.pinterest_pin_ideas) ? data.pinterest_pin_ideas.filter((s): s is string => typeof s === "string") : undefined,
+    image_notes: typeof data.image_notes === "string" || (typeof data.image_notes === "object" && data.image_notes !== null) ? data.image_notes as Record<string, string> | string : undefined,
+  };
+}
+
 export interface ContentFrontmatter {
   title: string;
   slug: string;
@@ -49,7 +70,7 @@ export function getContentBySlug(
     try {
       const fileContents = fs.readFileSync(filePath, "utf8");
       const { data, content } = matter(fileContents);
-      const fm = data as ContentFrontmatter;
+      const fm = parseContentFrontmatter(data as Record<string, unknown>);
       return { frontmatter: fm, content, slug: fileSlug };
     } catch {
       return null;
@@ -66,7 +87,7 @@ export function getAllContentFromDir(dir: string): ContentPage[] {
       const fileContents = fs.readFileSync(filePath, "utf8");
       const { data, content } = matter(fileContents);
       pages.push({
-        frontmatter: data as ContentFrontmatter,
+        frontmatter: parseContentFrontmatter(data as Record<string, unknown>),
         content,
         slug: path.basename(filePath, ".md"),
       });

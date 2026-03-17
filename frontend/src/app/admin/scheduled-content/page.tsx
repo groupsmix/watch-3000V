@@ -53,7 +53,6 @@ export interface ScheduledContentItem {
   content: string;
   editedBy: string;
   editHistory: { user: string; action: string; timestamp: string }[];
-  [key: string]: unknown;
 }
 
 // -------------------------------------------------------------------
