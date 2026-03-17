@@ -39,7 +39,12 @@ function LoginSkeleton() {
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/admin";
+  const rawRedirect = searchParams.get("redirect") || "/admin";
+  // Prevent open redirect: only allow relative paths that don't start with "//"
+  const redirectTo =
+    rawRedirect.startsWith("/") && !rawRedirect.startsWith("//")
+      ? rawRedirect
+      : "/admin";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
