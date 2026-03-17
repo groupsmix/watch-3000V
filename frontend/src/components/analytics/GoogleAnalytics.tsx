@@ -7,7 +7,8 @@ interface GoogleAnalyticsProps {
 }
 
 export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
-  if (!measurementId) return null;
+  // Validate measurement ID format (G-XXXXXXXXXX or UA-XXXXXXXX-X)
+  if (!measurementId || !/^(G|UA)-[A-Z0-9-]+$/i.test(measurementId)) return null;
 
   return (
     <>
