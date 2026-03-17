@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CalendarClock } from "lucide-react";
 import Modal from "./Modal";
 
@@ -19,13 +19,24 @@ export default function ScheduleModal({
   bulkCount,
   onSchedule,
 }: ScheduleModalProps) {
-  const now = new Date();
-  const defaultDate = item?.scheduledAt
-    ? new Date(item.scheduledAt).toISOString().slice(0, 16)
-    : new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+  function getDefaultDate() {
+    const now = new Date();
+    return item?.scheduledAt
+      ? new Date(item.scheduledAt).toISOString().slice(0, 16)
+      : new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+  }
 
-  const [dateValue, setDateValue] = useState(defaultDate);
+  const [dateValue, setDateValue] = useState(getDefaultDate);
   const [error, setError] = useState<string | null>(null);
+
+  // Reset date when modal reopens or item changes
+  useEffect(() => {
+    if (open) {
+      setDateValue(getDefaultDate());
+      setError(null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, item?.scheduledAt]);
 
   const handleSubmit = () => {
     if (!dateValue) {
@@ -33,7 +44,8 @@ export default function ScheduleModal({
       return;
     }
     const selected = new Date(dateValue);
-    if (selected <= now) {
+    // Compare against current time at submit, not render time
+    if (selected <= new Date()) {
       setError("Scheduled date must be in the future.");
       return;
     }

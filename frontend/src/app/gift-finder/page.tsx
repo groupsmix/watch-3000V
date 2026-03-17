@@ -280,7 +280,9 @@ export default function GiftFinderPage() {
   };
 
   if (showResults) {
-    const results = getRecommendations(answers as Answers);
+    // Validate all answers are present before casting
+    const hasAllAnswers = answers.recipient && answers.occasion && answers.budget && answers.style;
+    const results = hasAllAnswers ? getRecommendations(answers as Answers) : [];
 
     return (
       <div className="bg-ivory min-h-screen">
