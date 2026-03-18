@@ -3,10 +3,14 @@ interface SkeletonProps {
   variant?: "light" | "dark";
 }
 
+function skeletonClass(variant: "light" | "dark"): string {
+  return variant === "dark" ? "skeleton-dark" : "skeleton";
+}
+
 export function SkeletonLine({ className = "", variant = "light" }: SkeletonProps) {
   return (
     <div
-      className={`${variant === "dark" ? "skeleton-dark" : "skeleton"} h-4 rounded ${className}`}
+      className={`${skeletonClass(variant)} h-4 rounded ${className}`}
       aria-hidden="true"
     />
   );
@@ -15,7 +19,7 @@ export function SkeletonLine({ className = "", variant = "light" }: SkeletonProp
 export function SkeletonBlock({ className = "", variant = "light" }: SkeletonProps) {
   return (
     <div
-      className={`${variant === "dark" ? "skeleton-dark" : "skeleton"} ${className}`}
+      className={`${skeletonClass(variant)} ${className}`}
       aria-hidden="true"
     />
   );

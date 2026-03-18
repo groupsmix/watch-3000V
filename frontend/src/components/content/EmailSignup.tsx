@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
+import { storeSubscription, validateEmail } from "@/lib/subscription";
 
 interface EmailSignupProps {
   variant?: "inline" | "card";
@@ -27,9 +28,9 @@ export default function EmailSignup({
     e.preventDefault();
     if (!email || loading) return;
 
-    // Validate email format before proceeding
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address.");
+    const validation = validateEmail(email);
+    if (!validation.success) {
+      setError(validation.error);
       return;
     }
 
@@ -43,17 +44,12 @@ export default function EmailSignup({
         return;
       }
 
-      // Store subscription locally until a real backend (Mailchimp, ConvertKit,
-      // or Cloudflare Worker) is configured.
-      const stored = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
-      if (stored.includes(email)) {
-        setError("This email is already subscribed.");
+      const result = storeSubscription(email, source);
+      if (!result.success) {
+        setError(result.error);
         setLoading(false);
         return;
       }
-      stored.push(email);
-      localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
-      localStorage.setItem("wristnerd-sub-source", source);
       setSubmitted(true);
       showToast("Subscribed! We'll notify you when alerts go live.", "success");
     } catch {

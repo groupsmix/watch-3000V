@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
+import { storeSubscription } from "@/lib/subscription";
 
 const giftGuideLinks = [
   { href: "/occasion/fathers-day", label: "Father’s Day Watches" },
@@ -36,24 +37,10 @@ export default function Footer() {
   const handleFooterSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     setFooterError("");
-    if (!footerEmail) {
-      setFooterError("Please enter your email address.");
+    const result = storeSubscription(footerEmail);
+    if (!result.success) {
+      setFooterError(result.error);
       return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) {
-      setFooterError("Please enter a valid email address.");
-      return;
-    }
-    try {
-      const stored: string[] = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
-      if (stored.includes(footerEmail)) {
-        setFooterError("This email is already subscribed.");
-        return;
-      }
-      stored.push(footerEmail);
-      localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
-    } catch {
-      localStorage.setItem("wristnerd-subscriptions", JSON.stringify([footerEmail]));
     }
     setFooterSubmitted(true);
     showToast("Subscribed! We'll notify you when gift alerts go live.", "success");
