@@ -33,6 +33,28 @@
   --font-heading: "Playfair Display", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
 
+  /* === SPACING SCALE === */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+  --space-4xl: 6rem;     /* 96px */
+  --space-section: 5rem; /* 80px - consistent section padding */
+  --space-section-lg: 7rem; /* 112px */
+
+  /* === TOUCH TARGET === */
+  --touch-target-min: 48px;
+
+  /* === BORDER RADIUS SCALE === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
   /* === ANIMATIONS === */
   --animate-fade-in: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-in-up: fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -628,6 +650,75 @@ h1, h2, h3, h4, h5, h6 {
   height: 1px;
   background: linear-gradient(to right, transparent, var(--color-gold), transparent);
   opacity: 0.3;
+}
+
+/* === BODY SCROLL LOCK === */
+body.scroll-locked {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: var(--scroll-lock-top, 0);
+}
+
+/* === SKELETON LOADING === */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-pearl) 25%,
+    var(--color-gray-100) 37%,
+    var(--color-pearl) 63%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-dark {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.08) 37%,
+    rgba(255,255,255,0.04) 63%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+/* === TOAST NOTIFICATIONS === */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%) translateY(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.toast-enter {
+  animation: toast-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.toast-exit {
+  animation: toast-slide-out 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
 
 /* === RESPONSIVE === */

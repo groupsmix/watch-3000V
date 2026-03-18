@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useToast } from "@/components/ui/Toast";
 
 interface EmailSignupProps {
   variant?: "inline" | "card";
@@ -20,6 +21,7 @@ export default function EmailSignup({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { showToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,8 +55,10 @@ export default function EmailSignup({
       localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
       localStorage.setItem("wristnerd-sub-source", source);
       setSubmitted(true);
+      showToast("Subscribed! We'll notify you when alerts go live.", "success");
     } catch {
       setError("Something went wrong. Please try again.");
+      showToast("Something went wrong. Please try again.", "error");
     } finally {
       setLoading(false);
     }
@@ -62,7 +66,7 @@ export default function EmailSignup({
 
   if (variant === "inline") {
     return (
-      <form onSubmit={handleSubmit} className="flex gap-2 max-w-md">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 max-w-md" noValidate>
         {submitted ? (
           <p className="text-green-600 font-medium text-sm py-2">
             You&apos;re subscribed! We&apos;ll notify you when alerts go live.
@@ -79,23 +83,29 @@ export default function EmailSignup({
               className="absolute opacity-0 h-0 w-0 overflow-hidden"
               aria-hidden="true"
             />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
-              required
-              className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-5 py-2.5 bg-gold text-white font-semibold rounded-lg hover:bg-gold-hover transition-colors text-sm whitespace-nowrap disabled:opacity-60"
-            >
-              {loading ? "..." : "Subscribe"}
-            </button>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                placeholder="Your email address"
+                required
+                aria-invalid={!!error}
+                aria-describedby={error ? "inline-email-error" : undefined}
+                className={`flex-1 px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent min-h-[48px] ${
+                  error ? "border-red-400" : "border-gray-300"
+                }`}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-5 py-2.5 bg-gold text-white font-semibold rounded-lg hover:bg-gold-hover transition-colors text-sm whitespace-nowrap disabled:opacity-60 min-h-[48px]"
+              >
+                {loading ? "..." : "Subscribe"}
+              </button>
+            </div>
             {error && (
-              <p className="text-red-500 text-xs mt-1">{error}</p>
+              <p id="inline-email-error" className="text-red-500 text-xs" role="alert">{error}</p>
             )}
           </>
         )}
@@ -126,7 +136,7 @@ export default function EmailSignup({
             You&apos;re subscribed! We&apos;ll notify you when alerts go live.
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg" noValidate>
             <input
               type="text"
               name="website"
@@ -140,10 +150,14 @@ export default function EmailSignup({
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); setError(""); }}
               placeholder="Your email address"
               required
-              className="flex-1 px-5 py-3.5 rounded-full bg-white/[0.08] border border-white/[0.12] text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-transparent transition-all duration-300 min-h-[48px]"
+              aria-invalid={!!error}
+              aria-describedby={error ? "card-email-error" : undefined}
+              className={`flex-1 px-5 py-3.5 rounded-full bg-white/[0.08] border text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-transparent transition-all duration-300 min-h-[48px] ${
+                error ? "border-red-400/60" : "border-white/[0.12]"
+              }`}
             />
             <button
               type="submit"
@@ -155,7 +169,7 @@ export default function EmailSignup({
           </form>
         )}
         {error && (
-          <p className="text-red-400 text-xs mt-3">{error}</p>
+          <p id="card-email-error" className="text-red-400 text-xs mt-3" role="alert">{error}</p>
         )}
         <p className="text-xs text-gray-500 mt-5 font-light">
           Unsubscribe anytime. No spam, ever.

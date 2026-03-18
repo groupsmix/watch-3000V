@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 const occasionLinks = [
   { href: "/occasion/fathers-day", label: "Father\u2019s Day", desc: "Timeless gifts for Dad" },
@@ -42,14 +43,7 @@ export default function Header() {
   }, []);
 
   // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+  useScrollLock(mobileOpen);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -175,7 +169,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-gray-600 hover:text-navy rounded-xl hover:bg-pearl transition-all duration-300"
+            className="lg:hidden p-3 text-gray-600 hover:text-navy rounded-xl hover:bg-pearl transition-all duration-300 min-w-[48px] min-h-[48px] flex items-center justify-center"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
@@ -309,7 +303,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
+                className="block px-3 py-3.5 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -323,7 +317,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
+                className="block px-3 py-3.5 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -337,7 +331,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
+                className="block px-3 py-3.5 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -355,7 +349,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block px-3 py-3 text-sm font-medium text-gray-700 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
+                  className="block px-3 py-3.5 text-sm font-medium text-gray-700 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
                   {item.label}

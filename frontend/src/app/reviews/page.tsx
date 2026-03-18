@@ -3,6 +3,7 @@ import { getAllReviews } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SchemaMarkup from "@/components/content/SchemaMarkup";
 import EmailSignup from "@/components/content/EmailSignup";
+import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -77,6 +78,17 @@ export default function ReviewsIndexPage() {
 
       <div className="bg-ivory">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          {reviews.length === 0 ? (
+            <EmptyState
+              icon="reviews"
+              title="No Reviews Yet"
+              description="We're working on in-depth watch reviews. Check back soon for expert analysis and Gift-Worthiness Scores."
+              actionLabel="Take the Gift Finder Quiz"
+              actionHref="/gift-finder"
+              secondaryActionLabel="Browse Gift Guides"
+              secondaryActionHref="/occasion/fathers-day"
+            />
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {reviews.map((review) => (
               <Link
@@ -107,6 +119,7 @@ export default function ReviewsIndexPage() {
               </Link>
             ))}
           </div>
+          )}
 
           <div className="text-center mt-20">
             <Link
