@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import EmptyState from "@/components/ui/EmptyState";
 
 interface WatchEntry {
   name: string;
@@ -383,17 +384,22 @@ export default function GiftFinderPage() {
         </div>
 
         {results.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-2xl border border-pearl">
-            <p className="text-gray-500 mb-6 leading-relaxed">
-              We couldn&apos;t find watches matching all your criteria. Try adjusting
-              your budget or style preference.
-            </p>
-            <button
-              onClick={resetQuiz}
-              className="inline-flex items-center gap-2 px-8 py-3.5 cta-shine text-white font-semibold rounded-full min-h-[48px] hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] transition-all duration-500"
-            >
-              Retake the Quiz
-            </button>
+          <div className="bg-white rounded-2xl border border-pearl">
+            <EmptyState
+              icon="search"
+              title="No Matches Found"
+              description="We couldn't find watches matching all your criteria. Try adjusting your budget or style preference."
+              actionLabel="Browse All Reviews"
+              actionHref="/reviews"
+            />
+            <div className="text-center pb-8">
+              <button
+                onClick={resetQuiz}
+                className="inline-flex items-center gap-2 px-8 py-3.5 border border-navy/20 text-navy font-semibold rounded-full min-h-[48px] hover:bg-navy hover:text-white transition-all duration-500"
+              >
+                Retake the Quiz
+              </button>
+            </div>
           </div>
         )}
 
@@ -468,7 +474,7 @@ export default function GiftFinderPage() {
           <button
             key={option.value}
             onClick={() => handleSelect(option.value)}
-            className="luxury-card p-6 text-left group hover:border-gold/40 hover:shadow-[0_4px_20px_rgba(201,169,110,0.1)] transition-all duration-500"
+            className="luxury-card p-6 text-left group hover:border-gold/40 hover:shadow-[0_4px_20px_rgba(201,169,110,0.1)] transition-all duration-500 min-h-[48px]"
           >
             <span className="text-base font-medium text-navy group-hover:text-gold transition-colors duration-300">
               {option.label}
@@ -480,7 +486,7 @@ export default function GiftFinderPage() {
       {currentStep > 0 && (
         <button
           onClick={() => setCurrentStep(currentStep - 1)}
-          className="mt-10 text-sm text-gray-400 hover:text-gold transition-colors duration-300 flex items-center gap-1.5 font-light"
+          className="mt-10 text-sm text-gray-400 hover:text-gold transition-colors duration-300 flex items-center gap-1.5 font-light min-h-[48px]"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

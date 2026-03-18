@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 const occasionLinks = [
   { href: "/occasion/fathers-day", label: "Father\u2019s Day", desc: "Timeless gifts for Dad" },
@@ -28,6 +29,57 @@ const recipientLinks = [
   { href: "/recipient/friends", label: "For Friends", desc: "Thoughtful gestures" },
 ];
 
+interface NavLink {
+  href: string;
+  label: string;
+  desc: string;
+}
+
+function MegaMenuColumn({ title, links, onClose }: { title: string; links: NavLink[]; onClose: () => void }) {
+  return (
+    <div>
+      <h3 className="luxury-label mb-6">{title}</h3>
+      <ul className="space-y-1">
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              onClick={onClose}
+              className="group flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-ivory transition-all duration-300"
+            >
+              <div className="w-1 h-8 rounded-full bg-pearl group-hover:bg-gold transition-colors duration-300" />
+              <div>
+                <span className="block text-sm font-medium text-navy group-hover:text-gold transition-colors duration-300">
+                  {link.label}
+                </span>
+                <span className="block text-xs text-gray-400 mt-0.5">{link.desc}</span>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function MobileNavSection({ title, links, onClose }: { title: string; links: NavLink[]; onClose: () => void }) {
+  return (
+    <>
+      <p className="luxury-label mb-4 px-3">{title}</p>
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          className="block px-3 py-3.5 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
+          onClick={onClose}
+        >
+          {link.label}
+        </Link>
+      ))}
+    </>
+  );
+}
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -42,14 +94,7 @@ export default function Header() {
   }, []);
 
   // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+  useScrollLock(mobileOpen);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -175,7 +220,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-gray-600 hover:text-navy rounded-xl hover:bg-pearl transition-all duration-300"
+            className="lg:hidden p-3 text-gray-600 hover:text-navy rounded-xl hover:bg-pearl transition-all duration-300 min-w-[48px] min-h-[48px] flex items-center justify-center"
             aria-label="Toggle menu"
             aria-expanded={mobileOpen}
           >
@@ -200,76 +245,12 @@ export default function Header() {
         <div className="bg-white/98 backdrop-blur-xl border-b border-pearl shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div className="grid grid-cols-3 gap-12">
-              {/* By Occasion */}
-              <div>
-                <h3 className="luxury-label mb-6">By Occasion</h3>
-                <ul className="space-y-1">
-                  {occasionLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={closeMegaMenu}
-                        className="group flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-ivory transition-all duration-300"
-                      >
-                        <div className="w-1 h-8 rounded-full bg-pearl group-hover:bg-gold transition-colors duration-300" />
-                        <div>
-                          <span className="block text-sm font-medium text-navy group-hover:text-gold transition-colors duration-300">
-                            {link.label}
-                          </span>
-                          <span className="block text-xs text-gray-400 mt-0.5">{link.desc}</span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <MegaMenuColumn title="By Occasion" links={occasionLinks} onClose={closeMegaMenu} />
+              <MegaMenuColumn title="By Budget" links={budgetLinks} onClose={closeMegaMenu} />
 
-              {/* By Budget */}
+              {/* By Recipient — with featured CTA */}
               <div>
-                <h3 className="luxury-label mb-6">By Budget</h3>
-                <ul className="space-y-1">
-                  {budgetLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={closeMegaMenu}
-                        className="group flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-ivory transition-all duration-300"
-                      >
-                        <div className="w-1 h-8 rounded-full bg-pearl group-hover:bg-gold transition-colors duration-300" />
-                        <div>
-                          <span className="block text-sm font-medium text-navy group-hover:text-gold transition-colors duration-300">
-                            {link.label}
-                          </span>
-                          <span className="block text-xs text-gray-400 mt-0.5">{link.desc}</span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* By Recipient */}
-              <div>
-                <h3 className="luxury-label mb-6">By Recipient</h3>
-                <ul className="space-y-1">
-                  {recipientLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        onClick={closeMegaMenu}
-                        className="group flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-ivory transition-all duration-300"
-                      >
-                        <div className="w-1 h-8 rounded-full bg-pearl group-hover:bg-gold transition-colors duration-300" />
-                        <div>
-                          <span className="block text-sm font-medium text-navy group-hover:text-gold transition-colors duration-300">
-                            {link.label}
-                          </span>
-                          <span className="block text-xs text-gray-400 mt-0.5">{link.desc}</span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <MegaMenuColumn title="By Recipient" links={recipientLinks} onClose={closeMegaMenu} />
 
                 {/* Featured CTA in Mega Menu */}
                 <div className="mt-8 p-5 rounded-2xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
@@ -304,45 +285,15 @@ export default function Header() {
         <div className="absolute inset-0 bg-navy/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
         <div className={`relative bg-white h-full overflow-y-auto transition-transform duration-500 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <div className="px-6 py-8 space-y-2">
-            <p className="luxury-label mb-4 px-3">By Occasion</p>
-            {occasionLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            <MobileNavSection title="By Occasion" links={occasionLinks} onClose={() => setMobileOpen(false)} />
 
             <div className="section-divider my-6" />
 
-            <p className="luxury-label mb-4 px-3">By Budget</p>
-            {budgetLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            <MobileNavSection title="By Budget" links={budgetLinks} onClose={() => setMobileOpen(false)} />
 
             <div className="section-divider my-6" />
 
-            <p className="luxury-label mb-4 px-3">By Recipient</p>
-            {recipientLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block px-3 py-3 text-sm text-gray-600 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            <MobileNavSection title="By Recipient" links={recipientLinks} onClose={() => setMobileOpen(false)} />
 
             <div className="border-t border-pearl pt-6 mt-6 space-y-1">
               {[
@@ -355,7 +306,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block px-3 py-3 text-sm font-medium text-gray-700 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300"
+                  className="block px-3 py-3.5 text-sm font-medium text-gray-700 hover:text-navy hover:bg-ivory rounded-xl transition-all duration-300 min-h-[48px] flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
                   {item.label}

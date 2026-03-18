@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useToast } from "@/components/ui/Toast";
+import { storeSubscription } from "@/lib/subscription";
 
 const giftGuideLinks = [
   { href: "/occasion/fathers-day", label: "Father’s Day Watches" },
@@ -29,23 +31,19 @@ const companyLinks = [
 export default function Footer() {
   const [footerEmail, setFooterEmail] = useState("");
   const [footerSubmitted, setFooterSubmitted] = useState(false);
+  const [footerError, setFooterError] = useState("");
+  const { showToast } = useToast();
 
   const handleFooterSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!footerEmail) return;
-    // Basic email format validation
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(footerEmail)) return;
-    try {
-      const stored: string[] = JSON.parse(localStorage.getItem("wristnerd-subscriptions") || "[]");
-      if (!stored.includes(footerEmail)) {
-        stored.push(footerEmail);
-        localStorage.setItem("wristnerd-subscriptions", JSON.stringify(stored));
-      }
-    } catch {
-      // localStorage corrupted — reset it
-      localStorage.setItem("wristnerd-subscriptions", JSON.stringify([footerEmail]));
+    setFooterError("");
+    const result = storeSubscription(footerEmail);
+    if (!result.success) {
+      setFooterError(result.error);
+      return;
     }
     setFooterSubmitted(true);
+    showToast("Subscribed! We'll notify you when gift alerts go live.", "success");
   };
 
   return (
@@ -84,12 +82,12 @@ export default function Footer() {
             {/* Gift Guides */}
             <div className="lg:col-span-3">
               <h3 className="luxury-label text-gold mb-6">Gift Guides</h3>
-              <ul className="space-y-3.5">
+              <ul className="space-y-1">
                 {giftGuideLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 py-1.5"
                     >
                       {link.label}
                     </Link>
@@ -101,12 +99,12 @@ export default function Footer() {
             {/* Resources */}
             <div className="lg:col-span-2">
               <h3 className="luxury-label text-gold mb-6">Resources</h3>
-              <ul className="space-y-3.5">
+              <ul className="space-y-1">
                 {resourceLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 py-1.5"
                     >
                       {link.label}
                     </Link>
@@ -118,12 +116,12 @@ export default function Footer() {
             {/* Company */}
             <div className="lg:col-span-3">
               <h3 className="luxury-label text-gold mb-6">Company</h3>
-              <ul className="space-y-3.5">
+              <ul className="space-y-1">
                 {companyLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300"
+                      className="text-[0.875rem] text-gray-400 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 py-1.5"
                     >
                       {link.label}
                     </Link>
@@ -150,18 +148,29 @@ export default function Footer() {
                 Saved! We&apos;ll notify you when gift alerts go live.
               </p>
             ) : (
-              <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleFooterSubscribe}>
-                <input
-                  type="email"
-                  value={footerEmail}
-                  onChange={(e) => setFooterEmail(e.target.value)}
-                  placeholder="Your email address"
-                  required
-                  className="flex-1 px-5 py-3.5 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/20 transition-all duration-300"
-                />
+              <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleFooterSubscribe} noValidate>
+                <div className="flex-1">
+                  <input
+                    type="email"
+                    value={footerEmail}
+                    onChange={(e) => { setFooterEmail(e.target.value); setFooterError(""); }}
+                    placeholder="Your email address"
+                    required
+                    aria-invalid={!!footerError}
+                    aria-describedby={footerError ? "footer-email-error" : undefined}
+                    className={`w-full px-5 py-3.5 rounded-xl bg-white/[0.05] border text-white placeholder-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold/20 transition-all duration-300 min-h-[48px] ${
+                      footerError ? "border-red-400/60" : "border-white/[0.08]"
+                    }`}
+                  />
+                  {footerError && (
+                    <p id="footer-email-error" className="text-red-400 text-xs mt-2" role="alert">
+                      {footerError}
+                    </p>
+                  )}
+                </div>
                 <button
                   type="submit"
-                  className="px-7 py-3.5 cta-shine text-white font-semibold rounded-xl text-sm whitespace-nowrap tracking-wide"
+                  className="px-7 py-3.5 cta-shine text-white font-semibold rounded-xl text-sm whitespace-nowrap tracking-wide min-h-[48px]"
                 >
                   Subscribe
                 </button>
@@ -176,16 +185,16 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} WristNerd. All rights reserved.
             As an Amazon Associate, WristNerd earns from qualifying purchases.
           </p>
-          <div className="flex items-center gap-6">
-            <Link href="/affiliate-disclosure" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <Link href="/affiliate-disclosure" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 px-1">
               Disclosure
             </Link>
             <span className="w-px h-3 bg-gray-700" />
-            <Link href="/privacy-policy" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
+            <Link href="/privacy-policy" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 px-1">
               Privacy
             </Link>
             <span className="w-px h-3 bg-gray-700" />
-            <Link href="/terms-of-use" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300">
+            <Link href="/terms-of-use" className="text-[0.75rem] text-gray-600 hover:text-gold transition-colors duration-300 inline-flex items-center min-h-[44px] md:min-h-0 px-1">
               Terms
             </Link>
           </div>

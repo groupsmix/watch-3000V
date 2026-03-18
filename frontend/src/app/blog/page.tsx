@@ -3,6 +3,7 @@ import { getAllBlogPosts } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SchemaMarkup from "@/components/content/SchemaMarkup";
 import EmailSignup from "@/components/content/EmailSignup";
+import EmptyState from "@/components/ui/EmptyState";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -77,6 +78,17 @@ export default function BlogIndexPage() {
 
       <div className="bg-ivory">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          {posts.length === 0 ? (
+            <EmptyState
+              icon="blog"
+              title="No Articles Yet"
+              description="We're crafting expert guides on watch gifting, sizing, care, and more. Check back soon for helpful articles."
+              actionLabel="Take the Gift Finder Quiz"
+              actionHref="/gift-finder"
+              secondaryActionLabel="Browse Reviews"
+              secondaryActionHref="/reviews"
+            />
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {posts.map((post) => (
               <Link
@@ -102,6 +114,7 @@ export default function BlogIndexPage() {
               </Link>
             ))}
           </div>
+          )}
 
           <div className="text-center mt-20">
             <Link
