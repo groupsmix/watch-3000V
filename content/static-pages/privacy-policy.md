@@ -190,12 +190,73 @@ To exercise any of these rights, contact us at **hello@wristnerd.xyz**.
 
 ---
 
+## Legal Basis for Processing (GDPR)
+
+If you are located in the European Economic Area (EEA) or United Kingdom (UK), we process your personal data on the following legal bases:
+
+| Purpose | Legal Basis |
+|---------|-------------|
+| **Essential cookies & site functionality** | Legitimate interest (ensuring the Site works correctly) |
+| **Analytics (Google Analytics)** | Consent (via cookie consent banner) |
+| **Affiliate tracking cookies** | Consent (via cookie consent banner) |
+| **Email newsletters** | Consent (you actively subscribe) |
+| **Responding to contact inquiries** | Legitimate interest (responding to your request) |
+| **Legal compliance** | Legal obligation |
+
+You may withdraw your consent at any time by adjusting your cookie preferences via the cookie consent banner or by unsubscribing from emails.
+
+---
+
+## International Data Transfers
+
+Your data may be transferred to and processed in countries outside of your country of residence, including the United States. When transferring data from the EEA/UK to countries that do not have an adequacy decision from the European Commission, we rely on:
+
+- **Standard Contractual Clauses (SCCs)** — approved by the European Commission for data transfers to third-party service providers
+- **Data Processing Agreements** — with all third-party service providers who process personal data on our behalf
+
+Third-party services we use and their data processing locations:
+
+| Service | Purpose | Location |
+|---------|---------|----------|
+| Google Analytics | Website analytics | United States |
+| Email service provider | Newsletter delivery | United States |
+| Amazon Associates | Affiliate tracking | United States |
+| Cloudflare | CDN & security | Global (edge network) |
+
+---
+
 ## Data Retention
 
 - **Email subscriber data** — retained until you unsubscribe, after which it is deleted within 30 days
 - **Analytics data** — retained for up to 26 months (Google Analytics default)
 - **Contact form submissions** — retained for up to 12 months, then deleted
 - **Server logs** — retained for up to 90 days
+- **Cookie consent preferences** — retained for 12 months, then re-prompted
+
+---
+
+## Data Protection Officer
+
+For GDPR-related inquiries, you may contact our designated data protection contact:
+
+- **Email:** [privacy@wristnerd.xyz](mailto:privacy@wristnerd.xyz)
+- **Subject line:** "GDPR Request" or "Data Protection Inquiry"
+
+We aim to respond to all data protection requests within 30 days.
+
+---
+
+## Right to Lodge a Complaint
+
+If you are located in the EEA or UK and believe that your data protection rights have been violated, you have the right to lodge a complaint with your local data protection supervisory authority. A list of EU data protection authorities can be found at [https://edpb.europa.eu/about-edpb/about-edpb/members_en](https://edpb.europa.eu/about-edpb/about-edpb/members_en).
+
+For UK residents, you may contact the Information Commissioner's Office (ICO) at [https://ico.org.uk](https://ico.org.uk).
+
+---
+
+## Cookie Policy
+
+For detailed information about the cookies we use and how to manage your preferences, please see our [Cookie Policy →](/cookie-policy/).
 
 ---
 

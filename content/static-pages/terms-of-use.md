@@ -176,15 +176,28 @@ For significant changes, we may also notify email subscribers directly.
 
 These Terms shall be governed by and construed in accordance with the laws of the United States, without regard to conflict of law principles.
 
+**For EU/UK users:** If you are a consumer in the European Economic Area or United Kingdom, nothing in these Terms affects your rights under mandatory consumer protection laws of your country of residence. Any disputes arising under these Terms may be brought before the competent courts of your country of residence.
+
 ---
 
-## 10. Severability
+## 10. GDPR & Data Protection
+
+If you are located in the EEA or UK, the following additional terms apply:
+
+- We process your personal data in accordance with our [Privacy Policy →](/privacy-policy/) and the General Data Protection Regulation (GDPR).
+- You have rights under the GDPR including access, rectification, erasure, restriction, portability, and objection. See our Privacy Policy for details.
+- We use cookies on the Site. Non-essential cookies (analytics, affiliate tracking) are only set after you provide consent via our cookie consent banner. See our [Cookie Policy →](/cookie-policy/) for details.
+- If you believe your data protection rights have been infringed, you have the right to lodge a complaint with your local supervisory authority.
+
+---
+
+## 11. Severability
 
 If any provision of these Terms is found to be unenforceable or invalid, that provision shall be modified to the minimum extent necessary to make it enforceable, and the remaining provisions shall continue in full force and effect.
 
 ---
 
-## 11. Contact
+## 12. Contact
 
 If you have questions about these Terms, contact us:
 

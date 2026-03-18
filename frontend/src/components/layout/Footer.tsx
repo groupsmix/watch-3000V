@@ -24,6 +24,7 @@ const companyLinks = [
   { href: "/about", label: "About WristNerd" },
   { href: "/affiliate-disclosure", label: "Affiliate Disclosure" },
   { href: "/contact", label: "Contact Us" },
+  { href: "/cookie-policy", label: "Cookie Policy" },
   { href: "/privacy-policy", label: "Privacy Policy" },
   { href: "/terms-of-use", label: "Terms of Use" },
 ];

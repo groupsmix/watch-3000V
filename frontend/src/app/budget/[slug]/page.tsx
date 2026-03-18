@@ -4,6 +4,7 @@ import { renderContent, getSchemaFromPage, getMetadataFromPage } from "@/lib/con
 import Breadcrumb from "@/components/layout/Breadcrumb";
 import SchemaMarkup from "@/components/content/SchemaMarkup";
 import EmailSignup from "@/components/content/EmailSignup";
+import AffiliateDisclosureBanner from "@/components/content/AffiliateDisclosureBanner";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -54,6 +55,7 @@ export default async function BudgetPage({ params }: PageProps) {
 
       <div className="bg-ivory">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <AffiliateDisclosureBanner />
           <article className="prose max-w-none">
             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </article>
