@@ -52,10 +52,15 @@ export async function verifySession(): Promise<AuthUser | null> {
  * Log out by clearing the server-side auth cookie.
  */
 export async function logout(): Promise<void> {
-  await fetch("/api/auth/logout", {
-    method: "POST",
-    credentials: "include",
-  });
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch {
+    // Swallow network errors — the client-side session will be
+    // cleared regardless so the user is still effectively logged out.
+  }
 }
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {

@@ -15,7 +15,7 @@ function stripDangerousUrls(htmlString: string): string {
         trimmed.startsWith("data:") ||
         trimmed.startsWith("vbscript:")
       ) {
-        return `${attr}="#"`;
+        return `${attr}="about:invalid"`;
       }
       return _match;
     }

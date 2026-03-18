@@ -51,7 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshUser]);
 
   const logout = useCallback(async () => {
-    await authLogout();
+    try {
+      await authLogout();
+    } catch {
+      // Network error is acceptable — we still clear client state below.
+    }
     setUser(null);
     router.push("/login");
     router.refresh();
