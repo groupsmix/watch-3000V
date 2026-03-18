@@ -59,6 +59,8 @@ export default function UsersPage() {
 
   const handleSendInvite = () => {
     if (!inviteName || !inviteEmail) return;
+    // Validate email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inviteEmail)) return;
     setInviteStatus("sending");
     setTimeout(() => {
       setInviteStatus("sent");

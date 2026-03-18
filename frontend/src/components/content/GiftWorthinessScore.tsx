@@ -9,7 +9,8 @@ export default function GiftWorthinessScore({
   size = "md",
   showLabel = true,
 }: GiftWorthinessScoreProps) {
-  const percentage = (score / 10) * 100;
+  const clamped = Math.max(0, Math.min(10, score));
+  const percentage = (clamped / 10) * 100;
 
   const getBarColor = (s: number) => {
     if (s >= 9) return "from-gold to-gold-hover";

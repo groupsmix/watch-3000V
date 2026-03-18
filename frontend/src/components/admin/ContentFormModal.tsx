@@ -92,7 +92,7 @@ export default function ContentFormModal({
   }, [slug, existingSlugs, mode, item]);
 
   const handleSave = () => {
-    if (!title.trim()) return;
+    if (!title.trim() || slugConflict) return;
     onSave({
       title: title.trim(),
       type,

@@ -299,7 +299,7 @@ export default function ScheduledContentPage() {
     }
     const newItem: ScheduledContentItem = {
       ...item,
-      id: Math.max(...items.map((i) => i.id)) + 1,
+      id: Math.max(0, ...items.map((i) => i.id)) + 1,
       title: `${item.title} (Copy)`,
       slug: conflict ? `${newSlug}-${Date.now()}` : newSlug,
       status: "Draft",
