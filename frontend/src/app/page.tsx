@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   title: "WristNerd — Expert Watch Gift Guides & Reviews",
   description:
     "Find the perfect watch gift for him. Expert reviews, Gift-Worthiness Scores, and curated guides by occasion, budget, and recipient.",
+  openGraph: {
+    title: "WristNerd — Find the Perfect Watch Gift for Him",
+    description:
+      "Expert-curated watch gift guides for every occasion and budget. Reviews, comparisons, and a free Gift Finder Quiz.",
+    url: "https://wristnerd.xyz/",
+    images: ["/images/og/homepage-og.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WristNerd — Find the Perfect Watch Gift for Him",
+    description:
+      "Expert-curated watch gift guides for every occasion and budget. Reviews, comparisons, and a free Gift Finder Quiz.",
+    images: ["/images/og/homepage-og.jpg"],
+  },
+  alternates: {
+    canonical: "https://wristnerd.xyz/",
+  },
 };
 
 const occasions = [

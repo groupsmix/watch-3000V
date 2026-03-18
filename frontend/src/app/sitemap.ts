@@ -32,51 +32,54 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/terms-of-use`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.3 },
   ];
 
+  // Helper to strip trailing slashes from slug (content frontmatter sometimes includes them)
+  const cleanSlug = (slug: string) => slug.replace(/^\/+|\/+$/g, "");
+
   // Dynamic pages
   const reviews = getAllReviews().map((r) => ({
-    url: `${BASE_URL}/reviews/${r.slug}`,
+    url: `${BASE_URL}/reviews/${cleanSlug(r.slug)}`,
     lastModified: r.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const occasions = getAllOccasionPages().map((p) => ({
-    url: `${BASE_URL}/occasion/${p.slug}`,
+    url: `${BASE_URL}/occasion/${cleanSlug(p.slug)}`,
     lastModified: p.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.9,
   }));
 
   const budgets = getAllBudgetPages().map((p) => ({
-    url: `${BASE_URL}/budget/${p.slug}`,
+    url: `${BASE_URL}/budget/${cleanSlug(p.slug)}`,
     lastModified: p.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.9,
   }));
 
   const recipients = getAllRecipientPages().map((p) => ({
-    url: `${BASE_URL}/recipient/${p.slug}`,
+    url: `${BASE_URL}/recipient/${cleanSlug(p.slug)}`,
     lastModified: p.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const blogs = getAllBlogPosts().map((p) => ({
-    url: `${BASE_URL}/blog/${p.slug}`,
+    url: `${BASE_URL}/blog/${cleanSlug(p.slug)}`,
     lastModified: p.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
   const brands = getAllBrandSpotlights().map((b) => ({
-    url: `${BASE_URL}/brands/${b.slug}`,
+    url: `${BASE_URL}/brands/${cleanSlug(b.slug)}`,
     lastModified: b.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
   const comparisons = getAllComparisons().map((c) => ({
-    url: `${BASE_URL}/compare/${c.slug}`,
+    url: `${BASE_URL}/compare/${cleanSlug(c.slug)}`,
     lastModified: c.frontmatter.last_updated || STATIC_LAST_MODIFIED,
     changeFrequency: "monthly" as const,
     priority: 0.7,
