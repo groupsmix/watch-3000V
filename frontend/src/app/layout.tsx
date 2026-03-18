@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { ToastProvider } from "@/components/ui/Toast";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -54,9 +55,11 @@ export default function RootLayout({
           <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
         <ToastProvider>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <ErrorBoundary>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </ErrorBoundary>
         </ToastProvider>
       </body>
     </html>
