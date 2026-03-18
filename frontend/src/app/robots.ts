@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/", "/admin", "/login", "/login/"],
+        disallow: ["/api/", "/_next/", "/admin/", "/login/"],
       },
     ],
     sitemap: "https://wristnerd.xyz/sitemap.xml",

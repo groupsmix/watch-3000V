@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllReviews } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import SchemaMarkup from "@/components/content/SchemaMarkup";
 import EmailSignup from "@/components/content/EmailSignup";
 import type { Metadata } from "next";
 
@@ -8,13 +9,47 @@ export const metadata: Metadata = {
   title: "Watch Reviews — Expert Gift-Worthy Watch Reviews",
   description:
     "In-depth watch reviews with Gift-Worthiness Scores, pros & cons, and buying advice. Every watch hand-tested and rated for gift-giving.",
+  openGraph: {
+    title: "Watch Reviews — Expert Gift-Worthy Watch Reviews | WristNerd",
+    description:
+      "In-depth watch reviews with Gift-Worthiness Scores, pros & cons, and buying advice. Every watch hand-tested and rated for gift-giving.",
+    url: "https://wristnerd.xyz/reviews",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Watch Reviews — Expert Gift-Worthy Watch Reviews | WristNerd",
+    description:
+      "In-depth watch reviews with Gift-Worthiness Scores, pros & cons, and buying advice. Every watch hand-tested and rated for gift-giving.",
+  },
+  alternates: {
+    canonical: "https://wristnerd.xyz/reviews",
+  },
 };
 
 export default function ReviewsIndexPage() {
   const reviews = getAllReviews();
 
+  const collectionSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Watch Reviews — Expert Gift-Worthy Watch Reviews",
+    description:
+      "In-depth watch reviews with Gift-Worthiness Scores, pros & cons, and buying advice.",
+    url: "https://wristnerd.xyz/reviews",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: reviews.map((review, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://wristnerd.xyz/reviews/${review.slug}`,
+        name: review.frontmatter.title,
+      })),
+    },
+  });
+
   return (
     <>
+      <SchemaMarkup schema={collectionSchema} />
       {/* Hero Section */}
       <section className="relative bg-navy text-white py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">

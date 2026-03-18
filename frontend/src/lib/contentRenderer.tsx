@@ -16,6 +16,7 @@ export function getMetadataFromPage(page: ContentPage): Metadata {
   return {
     title: fm.meta_title || fm.title,
     description: fm.meta_description,
+    ...(fm.author ? { authors: [{ name: fm.author }] } : {}),
     openGraph: {
       title: fm.og_title || fm.meta_title || fm.title,
       description: fm.og_description || fm.meta_description,
@@ -23,6 +24,9 @@ export function getMetadataFromPage(page: ContentPage): Metadata {
     },
     twitter: {
       card: fm.twitter_card === "summary" ? "summary" : "summary_large_image",
+      title: fm.og_title || fm.meta_title || fm.title,
+      description: fm.og_description || fm.meta_description,
+      images: fm.og_image ? [fm.og_image] : undefined,
     },
     alternates: fm.canonical ? { canonical: fm.canonical } : undefined,
   };

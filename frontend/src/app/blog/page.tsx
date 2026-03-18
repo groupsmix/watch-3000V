@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllBlogPosts } from "@/lib/content";
 import Breadcrumb from "@/components/layout/Breadcrumb";
+import SchemaMarkup from "@/components/content/SchemaMarkup";
 import EmailSignup from "@/components/content/EmailSignup";
 import type { Metadata } from "next";
 
@@ -8,13 +9,47 @@ export const metadata: Metadata = {
   title: "Watch Blog — Tips, Guides & Gift Ideas",
   description:
     "Expert articles on watch gifting, sizing, care, and more. Learn how to pick the perfect watch gift with our in-depth guides.",
+  openGraph: {
+    title: "Watch Blog — Tips, Guides & Gift Ideas | WristNerd",
+    description:
+      "Expert articles on watch gifting, sizing, care, and more. Learn how to pick the perfect watch gift with our in-depth guides.",
+    url: "https://wristnerd.xyz/blog",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Watch Blog — Tips, Guides & Gift Ideas | WristNerd",
+    description:
+      "Expert articles on watch gifting, sizing, care, and more. Learn how to pick the perfect watch gift with our in-depth guides.",
+  },
+  alternates: {
+    canonical: "https://wristnerd.xyz/blog",
+  },
 };
 
 export default function BlogIndexPage() {
   const posts = getAllBlogPosts();
 
+  const collectionSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Watch Blog — Tips, Guides & Gift Ideas",
+    description:
+      "Expert articles on watch gifting, sizing, care, and more.",
+    url: "https://wristnerd.xyz/blog",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: posts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://wristnerd.xyz/blog/${post.slug}`,
+        name: post.frontmatter.title,
+      })),
+    },
+  });
+
   return (
     <>
+      <SchemaMarkup schema={collectionSchema} />
       {/* Hero Section */}
       <section className="relative bg-navy text-white py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
