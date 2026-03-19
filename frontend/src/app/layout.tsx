@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { ToastProvider } from "@/components/ui/Toast";
+import CookieConsent from "@/components/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import "./globals.css";
 
@@ -60,6 +61,7 @@ export default function RootLayout({
             <main className="min-h-screen">{children}</main>
             <Footer />
           </ErrorBoundary>
+          <CookieConsent />
         </ToastProvider>
       </body>
     </html>
